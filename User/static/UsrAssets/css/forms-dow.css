@@ -1,0 +1,624 @@
+body {
+  margin:0;
+  padding:0;
+  font-family: sans-serif;
+  background-image: url("/static/UsrAssets/img/forms/bg-6.jpg");
+  background-size: cover;
+  z-index: 1;
+}
+
+.login-box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 400px;
+  padding: 40px;
+  transform: translate(-50%, -50%);
+  box-sizing: border-box;
+  backdrop-filter: blur(20px) ;
+  box-shadow: 0 10px 25px 5px rgba(0,0,0,.6);
+  border-radius: 15px;
+  z-index: 1;
+}
+
+.login-box .logo-text h2 {
+  margin: 10px 0 30px 0;
+  padding: 0;
+  text-align: center;
+  background-size: 200%;
+    background-image: linear-gradient(105deg, rgb(255, 151, 151), #8bb3fc, #60fff4, #8eb6ff, rgb(255, 154, 154));
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    animation: text 5s linear infinite both;
+}
+
+.logo-text{
+    margin-top: -1.59rem;
+    margin-left: .4rem;
+    font-size: 25px;
+    letter-spacing: 1px;
+    font-family: 'El Messiri', sans-serif;
+    font-family: 'Merienda', cursive;
+    
+  }
+
+  
+  @keyframes text {
+    from {
+      background-position: 0 0;
+    }
+    
+    to {
+      background-position: 200% 200%;
+    }
+  }
+
+.login-box .user-box {
+  position: relative;
+  margin-bottom: 5px;
+}
+
+.login-box .user-box input {
+  width: 100%;
+  padding: 10px 0;
+  font-size: 16px;
+  color: #fff;
+  margin-bottom: 20px;
+  padding-left: 15px;
+  letter-spacing: 2px;
+  border: none;
+  border-bottom: 1px solid #fff;
+  outline: none;
+  background: transparent;
+}
+.login-box .user-box label {
+  position: absolute;
+  top:0;
+  left: 0;
+  padding: 10px 0;
+  font-size: 16px;
+  color: #fff;
+  pointer-events: none;
+  transition: all .5s ease-in-out;
+}
+
+.login-box .user-box input:focus ~ label,
+.login-box .user-box input:valid ~ label {
+  top: -20px;
+  left: 0;
+  color: #03e9f4;
+  font-size: 12px;
+}
+
+.login-box form .submit-btn {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  padding: 10px 20px;
+  color: #03e9f4;
+  font-size: 16px;
+  text-decoration: none;
+  text-transform: uppercase;
+  overflow: hidden;
+  transition: all .3s ease-in-out;
+  width: 40%;
+  margin: 30px 23% 0 23%;
+  letter-spacing: 4px
+}
+
+.login-box .submit-btn:hover {
+  background: rgba(0, 14, 26, 0.32);
+  border-radius: 5px;
+  scale: 1.05;
+  cursor: pointer;
+  box-shadow: 0 0 5px #03e8f45d,
+              0 0 25px #03e8f47c,
+              0 0 50px #03e8f48b,
+              0 0 100px #03e8f48b;
+}
+
+.login-box form .submit-btn button{
+    background-color: transparent;
+    cursor: pointer;
+    outline: none;
+    border: none;
+    width: 100%;
+    height: 100%;
+    font-size: 19px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: rgb(3, 244, 244);
+}
+
+.login-box .submit-btn span {
+  position: absolute;
+  display: block;
+}
+
+.login-box .submit-btn span:nth-child(1) {
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #03e9f4);
+  animation: btn-anim1 1s linear infinite;
+}
+
+@keyframes btn-anim1 {
+  0% {
+    left: -100%;
+  }
+  50%,100% {
+    left: 100%;
+  }
+}
+
+.login-box .submit-btn span:nth-child(2) {
+  top: -100%;
+  right: 0;
+  width: 2px;
+  height: 100%;
+  background: linear-gradient(180deg, transparent, #03e9f4);
+  animation: btn-anim2 1s linear infinite;
+  animation-delay: .25s
+}
+
+@keyframes btn-anim2 {
+  0% {
+    top: -100%;
+  }
+  50%,100% {
+    top: 100%;
+  }
+}
+
+.login-box .submit-btn span:nth-child(3) {
+  bottom: 0;
+  right: -100%;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(270deg, transparent, #03e9f4);
+  animation: btn-anim3 1s linear infinite;
+  animation-delay: .5s
+}
+
+@keyframes btn-anim3 {
+  0% {
+    right: -100%;
+  }
+  50%,100% {
+    right: 100%;
+  }
+}
+
+.login-box .submit-btn span:nth-child(4) {
+  bottom: -100%;
+  left: 0;
+  width: 2px;
+  height: 100%;
+  background: linear-gradient(360deg, transparent, #03e9f4);
+  animation: btn-anim4 1s linear infinite;
+  animation-delay: .75s
+}
+
+@keyframes btn-anim4 {
+  0% {
+    bottom: -100%;
+  }
+  50%,100% {
+    bottom: 100%;
+  }
+}
+
+.login-links {
+  display: flex;
+  justify-content: space-between;
+  }
+
+.signup-links {
+    text-align: center;
+  }
+.signup-links .link-1 a{
+  text-decoration: none;
+  color: #4ad8ff;
+  position: relative;
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+  .login-links span a {
+      text-decoration: none;
+      color: #4ad8ff;
+      position: relative;
+      font-size: 17px;
+      font-weight: 600;
+      letter-spacing: 1px;
+  }
+
+  .login-links span a .link-1 {
+      margin-right: auto;
+  }
+  .login-links span.link-3 {
+    margin-right: auto;
+    color: white;
+    letter-spacing: 1px;
+}
+
+  .login-links span a .link-2 {
+      margin-left: auto;
+  }
+  
+  .err-msg{
+      height: 20px;
+      width:100%;
+      margin:0 0 20px 0;
+      text-align: center;
+      font-size: 14px;
+      font-weight: 300;
+      letter-spacing: 1px;
+      color: rgb(255, 255, 255);
+      padding: 8px;
+      border-radius: 8px;
+      background: rgba(0, 14, 26, 0.379);
+  }
+  .err-msg .bi{
+      color: #ffff;
+      font-size: 18px;
+  }
+  .split-div{
+    position: relative;
+    height: 30px;
+    width: 100%;
+    left: 0;
+    margin-top: 10px;
+  }
+  .split-div svg {
+    position: absolute; 
+    height: 30px;
+    width: 40%;
+  }
+  .split-div .svg1 {
+    position: relative; 
+    left: 0;
+
+  }
+  .split-div p {
+    position: absolute; 
+    display: inline-flex;
+    text-align: center;
+    margin-top:-.1rem;
+    margin-left: 1.2rem;
+    color: white;
+    font-family: 'El Messiri', sans-serif;
+    font-family: 'Merienda', cursive;
+  }
+
+  .split-div .svg2 {
+    position: absolute; 
+    margin-left:3.75rem;
+  }
+
+  .google-signin {
+    position: relative;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 100%;
+    background-color: transparent;
+  }
+
+  .google-signin button{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    border: 2px solid rgb(164, 164, 164);
+    text-align: center;
+    padding: 11px 18px;
+    border-radius: 30px;
+    text-align: center;
+    transition: all 0.1s ease-in-out;
+  }
+  .google-signin button:hover{
+    border: 2px solid white;   
+    background: rgb(0, 14, 26, 0.32);
+  }
+  .google-signin button a{
+    position: relative;
+    width: 100%;
+    margin-left: 1.1rem;
+    text-align: center;
+    text-decoration:none;
+    color: white;
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: 1px;
+  }
+  .google-signin  img{
+    left: 1.8rem;
+    top: .6rem;
+    position: absolute;
+    width: 23px;
+    text-align: center;
+    z-index: 1;
+  }
+
+  .popup-message{
+    display: none;
+    position: relative;
+    backdrop-filter: blur(10px);
+    background-color: rgba(62, 84, 98, 0.579);
+    box-shadow: 0 8px 15px 5px rgba(0, 0, 0, 0.593);
+    border-radius: 15px;
+    color: white;
+    width: 350px;
+    margin: 0 auto;
+    margin-top: 15%;
+    padding: 5px 10px;
+    z-index: 50;
+    animation: expand 0.5s ease-in-out; 
+  }
+
+
+
+    @keyframes expand {
+      0%, 100% {
+          transform: none;
+      }
+
+      50% {
+          transform: scale3d(1.2, 1.2,1);
+      }
+  }
+  .close-popup{
+    cursor: pointer;
+    font-size: 25px;
+    float: right;
+  }
+  .popup-content p{
+    margin-top: 15px;
+    padding: 8px;
+    line-height: 1.5;
+    font-size: 20px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-align: center;
+  }
+  .popup-content span{
+    margin-top: 5px;
+    margin-right: 10px;
+    text-align: center;
+    color: white;
+  }
+  .login-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    background: rgba(0, 0, 0, 0.577); 
+}
+
+.success-animation { 
+  margin-left: 10px;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.checkmark {
+  width: 50px; 
+  height: 50px;
+  border-radius: 50%;
+  display: block;
+  stroke-width: 3;
+  stroke: #00ff8c;
+  stroke-miterlimit: 10;
+  box-shadow: inset 0px 0px 0px #ffffff;
+  animation: fill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
+  position: relative;
+  top: 5px;
+  right: 5px;
+  margin: 0 auto;
+}
+.checkmark__circle {
+    stroke-dasharray: 166;
+    stroke-dashoffset: 166;
+    stroke-width: 4;
+    stroke-miterlimit: 10;
+    stroke: #00ff8c;
+    fill: transparent;
+    animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+ 
+}
+
+.checkmark__check {
+    transform-origin: 50% 50%;
+    stroke-dasharray: 48;
+    stroke-dashoffset: 48;
+    animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+}
+
+@keyframes stroke {
+    100% {
+        stroke-dashoffset: 0;
+    }
+}
+
+@keyframes scale {
+    0%, 100% {
+        transform: none;
+    }
+
+    50% {
+        transform: scale3d(1.1, 1.1, 1);
+    }
+}
+
+@keyframes fill {
+    100% {
+        box-shadow: inset 0px 0px 0px 30px transparent;
+    }
+}
+
+
+.warning-message{
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 36%;
+  backdrop-filter: blur(10px);
+  background-color: rgba(62, 84, 98, 0.579);
+  box-shadow: 0 8px 15px 5px rgba(0, 0, 0, 0.593);
+  border-radius: 15px;
+  color: white;
+  width: 350px;
+  margin: 0 auto;
+  margin-top: 15%;
+  padding: 5px 10px;
+  z-index: 50;
+  animation: expand 0.5s ease-in-out; 
+}
+
+.f-modal-alert {
+  background-color: #ffffff00;
+  border-radius: 4px;
+  margin: 0px;
+  padding: 0px;
+}
+
+.f-modal-alert .f-modal-icon {
+  border-radius: 50%;
+  border: 3px solid #ffd500;
+  box-sizing: content-box;
+  height: 40px;
+  margin: 20px auto;
+  padding: 0;
+  position: relative;
+  width: 40px;
+}
+
+.f-modal-warning {
+  border-color: #ffd500;
+}
+
+.f-modal-warning:before {
+  animation: pulseWarning 2s linear infinite;
+  background-color: transparen;
+  border-radius: 50%;
+  content: "";
+  display: inline-block;
+  height: 100%;
+  opacity: 0;
+  position: absolute;
+  width: 100%;
+}
+
+.f-modal-warning:after {
+  background-color: transparent;
+  border-radius: 50%;
+  content: '';
+  display: block;
+  height: 100%;
+  position: absolute;
+  width: 100%;
+  z-index: 1;
+}
+
+.f-modal-warning .f-modal-body {
+  background-color: #ffd500;
+  border-radius: 2px;
+  height: 16px;
+  left: 50%;
+  margin-left: -1.7px;
+  position: absolute;
+  top: 1px;
+  width: 4px;
+  z-index: 2;
+}
+
+.f-modal-warning .f-modal-dot {
+  background-color: #ffd500;
+  border-radius: 50%;
+  bottom: 10px;
+  height: 5px;
+  left: 50%;
+  margin-left: -2px;
+  position: absolute;
+  width: 5px;
+  z-index: 2;
+}
+
+@keyframes pulseWarning {
+  0% {
+      background-color: transparent;
+      transform: scale(0);
+      opacity: 1;
+  }
+  10% {
+    background-color: transparent;
+    transform: scale(0);
+    opacity: 1;
+  }
+  20% {
+    background-color: transparent;
+    transform: scale(0);
+    opacity: 1;
+  }
+  29% {
+    background-color: transparent;
+    transform: scale(0);
+    opacity: 1;
+  }
+
+  30% {
+      background-color: #ffcc0019;
+      transform: scale(1);
+      opacity: 0.6;
+  }
+
+  100% {
+      background-color: #ffcc00;
+      transform: scale(2);
+      opacity: 0;
+  }
+}
+
+
+.user-box span .bi-shield-x,
+.user-box span .bi-shield-exclamation,
+.user-box span .bi-shield-check
+{
+  position: absolute;
+  top: 0.8rem;
+  right: 0.5rem;
+  scale: 1.3;
+  padding-bottom: 15px;
+}
+.user-box span .bi-shield-x{
+  color: red;
+}
+.user-box span .bi-shield-exclamation{
+  color: yellow;
+}
+.user-box span .bi-shield-check{
+  color: #2bff00;
+}
+
+.user-box span .bi-ban{
+  position: absolute;
+  right: 0.5rem;
+  top: 0.9rem;
+  scale: 1.4;
+  color: red;
+  padding-bottom: 15px;
+}
+.user-box span .bi-check2-all{
+  position: absolute;
+  right: 0.5rem;
+  top: 0.8rem;
+  scale: 1.5;
+  color: #2bff00;
+}

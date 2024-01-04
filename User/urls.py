@@ -1,0 +1,36 @@
+from django.urls import path
+from User import views
+app_name="User"
+urlpatterns = [
+    path('Index/',views.Index,name="Index"),
+    path('Home/',views.Home,name="Home"),
+    path('SocialHome/',views.SocialHome,name="SocialHome"),
+    path('Login/',views.Login,name="Login"),
+    path('SignUp/',views.SignUp,name="SignUp"),
+    path('UsrProfile/',views.UsrProfile,name="UsrProfile"),
+    path('Usrlogout/',views.Usrlogout,name="Usrlogout"),
+    path('EditPage/<int:usrid>',views.EditPage,name="EditPage"),
+    path('UpdateProfile/<int:usrid>',views.UpdateProfile,name="UpdateProfile"),
+    path('UsrChngPass/',views.UsrChngPass,name="UsrChngPass"),
+    path('ViewAlbum/<int:Aid>',views.ViewAlbum,name="ViewAlbum"),
+    path('ViewProfile/<int:Cid>',views.ViewProfile,name="ViewProfile"),
+    path('Followcr/<int:Cid>',views.Followcr,name="Followcr"),
+    path('Unfollwcr/<int:Cid>',views.Unfollwcr,name="Unfollwcr"),
+    path('search/',views.search,name="search"),
+    path('play_song/',views.play_song,name="play_song"),
+    path('play_album/',views.play_album,name="play_album"),
+    path('play_playlist/',views.play_playlist,name="play_playlist"),
+    path('play_crplaylist/',views.play_crplaylist,name="play_crplaylist"),
+    path('CreatePlaylist/', views.CreatePlaylist, name='CreatePlaylist'),
+    path('AllPlaylist/', views.AllPlaylist, name='AllPlaylist'),
+    path('ViewPlaylist/<int:Pid>', views.ViewPlaylist, name='ViewPlaylist'),
+    path('PlaylistView/<int:Pid>', views.PlaylistView, name='PlaylistView'),
+    path('UpdatePlaylist/<int:Pid>', views.UpdatePlaylist, name='UpdatePlaylist'),
+    path('AddtoPlaylist/', views.AddtoPlaylist, name='AddtoPlaylist'),
+    path('delete_from_usr_playlist/<int:playlist_id>/<int:music_id>/', views.delete_from_usr_playlist, name='delete_from_usr_playlist'),
+    path('AboutUs/', views.AboutUs, name='AboutUs'),
+    path('download_music/', views.download_music, name='download_music'),
+    path('songs_by_language/<int:Lid>', views.songs_by_language, name='songs_by_language'),
+    path('songs_by_genre/<int:Gid>', views.songs_by_genre, name='songs_by_genre'),
+
+]

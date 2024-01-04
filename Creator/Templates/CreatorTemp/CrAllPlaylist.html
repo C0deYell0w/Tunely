@@ -1,0 +1,118 @@
+{% extends 'CreatorTemp/CrIndex.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tunely</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cantora+One&family=Roboto:wght@900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'CrAssets/css/style.css ' %}"/>
+    <script>
+        var scrollPosition = sessionStorage.removeItem('scrollPosition');
+
+        if (scrollPosition) {
+            document.querySelector('.body-container').scrollTop = scrollPosition;
+        }
+
+        window.addEventListener('beforeunload', function () {
+            sessionStorage.setItem('scrollPosition', document.querySelector('.body-container').scrollTop);
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            var bodyContainer = document.querySelector('.body-container');
+            bodyContainer.addEventListener('scroll', function () {
+            
+            });
+        });
+    </script>
+
+</head>
+<body>
+    <div>
+
+    </div>
+    <div class="page-container-rel" >
+        <div class="playlists-container" id="section1">
+            <h4>All PlayLists</h4>
+                <div class="item-container-add"  onclick="addToPlaylistTrigger()">
+                    <div class="items-card-add" >
+                        <span><i class="bi bi-plus-lg"></i></span>
+                    </div>
+                    <h5>Create New</h5>
+               </div>
+            {% for i in Playlist %}
+                <div class="item-container">
+                    <a href="{% url 'Creator:ViewCrPlaylist' i.id %}">
+                        <div class="items-card">
+                            <div class="album-cover-playicon-container">
+                                <div class="playlistcover-playicon" data-playlist-id="{{ i.id }}">                                              
+                                    <span><i class="bi bi-play-fill"></i></span>
+                                </div>
+                            </div>
+                            {% if i.Playlist_Cover %}
+                                <img src="{{i.Playlist_Cover.url}}" alt="">
+                            {% else %}
+                                <img src="{% static 'Crassets/img/default playlist cover.jpg' %}" alt="" srcset="">
+                            {% endif %}
+                        </div>
+                        <h5 class="{% if i.PlaylistName|length > 15 %}scrolling-text{% endif %}">{{i.PlaylistName}}</h5>
+                    </a>
+                </div>
+            {% endfor %}    
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="footer-section">
+            <h4>Tunely</h4>
+            <ul>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Origin</a></li>
+            </ul>
+        </div>
+        
+        <div class="footer-section">
+            <h4>Community</h4>
+            <ul>
+                <li><a href="{% url 'Creator:SignUp' %}">For Artists</a></li>
+                <li><a href="#">Advertising</a></li>
+            </ul>
+        </div>
+        
+        <div class="footer-section">
+            <h4>Social</h4>
+            <ul>
+                <li><a href="#"> <i class="bi bi-envelope"></i> Mail</a></li>
+                <li><a href="#"> <i class="bi bi-twitter-x"></i> Twitter</a></li>
+                <li><a href="#"> <i class="bi bi-instagram"></i> Instagram</a></li>
+            </ul>
+        </div>
+        
+        <div class="footer-section">
+            <h4>Useful Links</h4>
+            <ul>
+                <li><a href="#">Support</a></li>
+                <li><a href="#">Terms of Use</a></li>
+                <li><a href="#">Privacy Policy</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-line"></div>
+        
+        <div class="footer-copyright">
+            <p>&copy; 2024 Tunely</p>
+        </div>
+    </div>
+    
+
+     <div class="overlay-playlistadd" id="overlay"></div>
+
+     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>  
+     <script src="{% static 'CrAssets/js/playfromcover.js ' %}"></script>
+    </body>
+</html>
+{% endblock content %}

@@ -1,0 +1,187 @@
+{% extends 'AdminTemp/Index.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+<style>
+.bg_ground{
+    background-image: linear-gradient(to bottom, #172337 20%, #243b55 40%, #2f4a69 60%);
+    height: 100%;
+    width: 100%;
+}
+
+.genre-box{
+    background-color: rgb(45, 150, 255);
+    width: 60vh;
+    margin: 0 auto;
+    text-align: center;
+    margin-bottom:10vh;
+    color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 0 13px 6px rgba(0, 0, 0, 0.35); 
+
+}
+
+h3{
+    padding:1rem;
+}
+.name-box{
+    padding-bottom: 5px;
+}
+.name-box input[type="text"] {
+    width: 280px;
+    height: 40px; 
+    padding: 15px; 
+    border-radius: 8px;
+    border: none;
+}
+.button_div{
+    padding-top:1rem;
+    padding-bottom:1.8rem;
+    
+}
+.sub_btn{
+    background-image: linear-gradient(to bottom, #1e3146, #2f4a69 );
+    color: white;
+    width:20vh;
+    height: 30px;
+    font-size: 16px;
+    border:none;
+    overflow: hidden;
+    border-radius: 5px;
+    transition: transform 0.3s;
+    box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.35); 
+
+}
+.sub_btn:hover{
+    cursor: pointer;
+    color: #6ddf08;
+    transform: scale(1.1); 
+    box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.35); 
+
+
+
+}
+p{
+    font-size:16px;
+    padding-top:2px;
+    color: white;
+}
+
+.button_outer:hover{
+    cursor: pointer;
+    transform: scale(1.1); 
+     
+}
+
+
+
+.card{
+    box-shadow: 0 0 13px 8px rgba(0, 0, 0, 0.35); 
+}
+
+</style>
+
+</head>
+<body >
+
+        <div class="main-body bg_ground" >
+            <div class="page-wrapper">
+                <div class="page-body">
+                    <div class="genre-box">
+                        <h3>Mood / Emotions</h3>
+                        <form action="{% url 'TunelyAdmin:Mood_Add' %}" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+
+                            <div class="name-box">
+                                <input type="text" name="mood" required="" placeholder="Mood / Emotions">
+                            </div>
+
+                            <div class="button_div">
+                                <button class="sub_btn" type="submit">Submit</button>
+                            </div>
+
+                        </form>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Mood / Emotions </h5>
+                            <div class="card-header-right">
+                                <ul class="list-unstyled card-option">
+                                    <li><i class="fa fa fa-wrench open-card-option"></i></li>
+                                    <li><i class="fa fa-window-maximize full-card"></i></li>
+                                    <li><i class="fa fa-minus minimize-card"></i></li>
+                                    <li><i class="fa fa-refresh reload-card"></i></li>
+                                    <li><i class="fa fa-trash close-card"></i></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="card-block table-border-style">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th style="width:10%;">#</th>
+                                            <th style="width:60%;">Moods / Emotions</th>
+                                            <th style="width:30%;" >Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                       {% for i in data reversed %} 
+                                        <tr>
+                                            <th scope="row">{{forloop.counter}}</th>
+                                            <td>{{i.Mood}}</td>
+                                            <td>
+                                                <div class="button-container">
+                                                    <form action="{% url 'TunelyAdmin:DelMood' i.id %}" style="display: inline;">
+                                                        <button type="submit" class="btn waves-effect waves-light btn-grd-danger "><i class="ti-trash"></i>Delete </button>
+                                                    </form>
+                                                    <button type="submit" class="btn waves-effect waves-light btn-grd-inverse"><i class="ti-marker-alt"></i>Edit</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    
+                    
+      
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+<script>
+
+    const btnUpload = document.getElementById("upload_file");
+    const btnOuter = document.querySelector(".button_outer");
+
+    btnUpload.addEventListener("change", function(e) {
+        const ext = btnUpload.value.split('.').pop().toLowerCase();
+        if (['gif', 'png', 'jpg', 'jpeg'].indexOf(ext) !== -1) {
+            btnOuter.classList.add("file_uploading");
+
+            // Simulate a delay to show the uploading progress
+            setTimeout(function() {
+                btnOuter.classList.add("file_uploaded");
+            }, 2800);
+        }
+    });
+
+</script>
+</html>
+{% endblock content %}

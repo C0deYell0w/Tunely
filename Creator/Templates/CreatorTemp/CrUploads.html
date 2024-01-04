@@ -1,0 +1,163 @@
+{% extends 'CreatorTemp/CrIndex.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tunely</title>
+    <link rel="stylesheet" href="{% static 'CrAssets/css/uploadstyle.css ' %}"/>
+    <style>
+      ::placeholder {color: white;} 
+    </style>
+</head>
+
+<body>
+    <div class="Cr-upload-container">
+        <div id="mc_embed_upload">
+          <form action="{% url 'Creator:MusicUpload' %}" method="post" enctype="multipart/form-data" autocomplete="off">
+            {% csrf_token %}
+            <div id="mc_embed_signup_scroll">
+              <h2>Tunely Uploads</h2>
+  
+              <div class="mc-field-group">
+                <label for="Cr-Fname">Music Title </label>
+                <input type="text" name="Title" required="" id="Cr-Fname" autocomplete="off">
+              </div>
+
+              <div class="mc-audio-group">
+                <label for="">Audio file</label>
+                <div class="audio-select-div">
+                  <div class="cover"><span><i class="bi bi-cloud-arrow-up"></i> </span></div>
+                  <input type="file" name="audiofile" accept="audio/*" required>
+                </div>
+              </div>
+
+              <div class="mc-collab-group">
+                <div class="collaborators-group-div">
+                  <div class="mc-group-selection1">
+                    <label for="">Genre </label>
+                    <div class="group-select-div">
+                      <select name="genreselect" id="">
+                        <option value=""> -- Select -- </option>
+                        {% for i in Gdata|dictsort:"Genre_Name" %}
+                        <option value="{{i.id}}">{{i.Genre_Name}}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                  </div>
+                  <div class="mc-group-selection2">
+                    <label for="">Album </label>
+                    <div class="group-select-div">
+                      <select name="albumselect" id="">
+                        <option value=""> -- Select -- </option>
+                        {% for i in ALdata %}
+                        <option value="{{i.id}}">{{i.Album_Name}}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mc-collab-group">
+                <div class="collaborators-group-div">
+                  <div class="mc-group-selection1">
+                    <label for="">Language </label>
+                    <div class="genre-select-div">
+                      <select name="langselect" id="">
+                        <option value=""> -- Select -- </option>
+                        {% for i in Ldata|dictsort:"Lang" %}
+                        <option value="{{i.id}}">{{i.Lang}}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                  </div>
+                  <div class="mc-group-selection2">
+                    <label for="Cr-Uname">Mood / Emotion </label>
+                    <div class="genre-select-div">
+                      <select name="moodselect" id="">
+                        <option value=""> -- Select -- </option>
+                        {% for i in Edata|dictsort:"Mood" %}
+                        <option value="{{i.id}}">{{i.Mood}}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mc-date-group">
+                <label for="">Release Date </label>
+                <div class="dtate-input-cont">
+                  <input type="date" name="Rdate" autocomplete="off">
+                </div>
+              </div>
+
+              <div class="mc-cover-group">
+                <label for="">Cover Art </label>
+                <div class="cover-select-div">
+                  <div class="cover"><span><i class="bi bi-cloud-arrow-up"></i> </span></div>
+                  <input type="file" name="coverimg"  accept="image/*" required="" autocomplete="off">
+                </div>
+              </div>
+
+              <div class="mc-field-group">
+                <label for="Cr-Fname">Your Role </label>
+                <input style="color: white;" type="text" name="crrole" placeholder="Uploading Creators Role " required="" id="Cr-Fname" autocomplete="off">
+              </div>
+
+              <div class="mc-collab-group">
+                <label for="">Collaborators </label>
+                <div class="collaborators-div">
+
+                  <select class="coollab1" name="collab1" id="">
+                    <option value="">  Select Collaborator 1  </option>
+                    <option value="" disabled></option>
+                    {% for i in FollowData %}
+                    <option value="{{i.id}}">{{i.UsrName}}</option>
+                    {% endfor %}
+                  </select>
+
+                  <select class="collab2" name="collab2" id="">
+                    <option value=""> Select Collaborator 2  </option>
+                    <option value="" disabled></option>
+                    {% for i in FollowData %}
+                    <option value="{{i.id}}">{{i.UsrName}}</option>
+                    {% endfor %}
+                  </select>
+
+                  <select class="collab3" name="collab3" id="">
+                    <option value=""> Select Collaborator 3  </option>
+                    <option value="" disabled></option>
+                    {% for i in FollowData %}
+                    <option value="{{i.id}}">{{i.UsrName}}</option>
+                    {% endfor %}
+                  </select>
+
+                </div>
+              </div>
+
+              <div class="mc-collab-group">
+                <label for="">Roles </label>
+                <div class="collaborators-div">
+
+                  <input  type="text" placeholder="Collaborator 1 Role" name="c1role" >
+
+                  <input  type="text" placeholder="Collaborator 2 Role" name="c2role">
+
+                  <input  type="text" placeholder="Collaborator 3 Role" name="c3role">
+
+                </div>
+              </div>
+          
+              <button type="submit">Upload</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <script src="{% static 'CrAssets/js/position.js ' %}"></script>
+</body>
+</html>
+{% endblock content %}

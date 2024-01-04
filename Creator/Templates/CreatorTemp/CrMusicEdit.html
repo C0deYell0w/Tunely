@@ -1,0 +1,352 @@
+{% extends 'CreatorTemp/CrIndex.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tunely</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cantora+One&family=Roboto:wght@900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'CrAssets/css/style.css' %}"/>
+    <link rel="stylesheet" href="{% static 'CrAssets/css/uploadstyle.css' %}"/>
+    <script>
+        var scrollPosition = sessionStorage.removeItem('scrollPosition');
+
+        if (scrollPosition) {
+            document.querySelector('.body-container').scrollTop = scrollPosition;
+        }
+
+        window.addEventListener('beforeunload', function () {
+            sessionStorage.setItem('scrollPosition', document.querySelector('.body-container').scrollTop);
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            var bodyContainer = document.querySelector('.body-container');
+            bodyContainer.addEventListener('scroll', function () {
+            
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="page-container" >
+        <div class="banner-img-container" id="card"></div>
+            <div class="profile-body-album-edit">
+
+              <form action="{% url 'Creator:UpdateMusic' context.songid %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="album-image">
+                    {% if context.cover %}
+                    <div class="image-addnew">
+                        <input type="file" name="musiccover" accept="image/*" id="fileInput">
+                        <div class="edit-idon-image">
+                            <i class="bi bi-pen"></i>
+                        </div>
+                    </div>
+                        <img src="{{ context.cover }}" id="currentImage">
+                    {% else %}
+                        <img src="{% static 'CrAssets/img/profiledefault.jpg ' %}"  id="currentImage">
+                    {% endif %}  
+                    <img src="#" alt="Selected Image" id="selectedNewImage">
+                </div>
+
+                <div class="edit-play-icon" data-edit-id="{{ context.songid }}">
+                  <a href="#" class="play-edit-music" >
+                    <span><i class="bi bi-play-fill"></i></span>
+                  </a>
+                </div>
+                
+
+                <div class="save-updates">
+                   <button type="submit"> Save Changes</button>
+                   <button type="button" id="confirmmodal">Delete Song</button>
+                </div>
+
+                <div class="creator-album-info">
+                    <span>Title</span>
+                    <h3><input type="text" value="{{context.title}}" name="titlename"></h3>
+                </div>
+                
+                <div class="artist-popular-songs-album">
+
+                    <div class="mc-field-group">
+                        <label for="Cr-Fname">Your Role </label>
+                        <input type="text" name="crrole" placeholder="Enter Your Role." value="{% if context.crrole %}{{context.crrole}}{% endif %}" required="" id="Cr-Fname" autocomplete="off">
+                      </div>
+        
+
+                    <div class="mc-collab-group">
+                        <div class="collaborators-group-div">
+                          <div class="mc-group-selection1">
+                            <label for="">Genre </label>
+                            <div class="group-select-div">
+                              <select name="genreselect" class="genreselect" id="">
+                                <option value="{{context.genre.id}}">{% if context.genre.id %}{{context.genre.Genre_Name}}{% else %} Not Selected {% endif %}</option>
+                                <option disabled></option>
+                                {% for i in context.Gdata|dictsort:"Genre_Name" %}
+                                <option value="{{i.id}}">{{i.Genre_Name}}</option>
+                                {% endfor %}
+                              </select>
+                            </div>
+                            <button  type="button" class="remove-groupselect" title="Remove Selected Genre" data-group="genreselect">&times;</button>
+                          </div>
+                          <div class="mc-group-selection2">
+                            <label for="">Album </label>
+                            <div class="group-select-div">
+                              <select name="albumselect" class="albumselect" id="">
+                                <option value="{{context.album.id}}">{% if context.album.id %}{{context.album.Album_Name}}{% else %} Not Selected {% endif %}</option>
+                                <option disabled></option>
+                                {% for i in context.ALdata|dictsort:"Album_Name" %}
+                                <option value="{{i.id}}">{{i.Album_Name}}</option>
+                                {% endfor %}
+                              </select>
+                            </div>
+                            <button  type="button" class="remove-groupselect" title="Remove Selected Album" data-group="albumselect">&times;</button>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div class="mc-collab-group">
+                        <div class="collaborators-group-div">
+                          <div class="mc-group-selection1">
+                            <label for="">Language </label>
+                            <div class="group-select-div">
+                              <select name="langselect" class="langselect" id="">
+                                <option value="{{context.language.id}}">{% if context.language.id %}{{context.language.Lang}}{% else %} Not Selected {% endif %}</option>
+                                <option disabled></option>
+                                {% for i in context.Ldata|dictsort:"Lang" %}
+                                <option value="{{i.id}}">{{i.Lang}}</option>
+                                {% endfor %}
+                              </select>
+                            </div>
+                            <button  type="button" class="remove-groupselect" title="Remove Selected Language" data-group="langselect">&times;</button>
+                          </div>
+                          <div class="mc-group-selection2">
+                            <label for="Cr-Uname">Mood / Emotion </label>
+                            <div class="group-select-div">
+                              <select name="moodselect"  class="moodselect" id="">
+                                <option value="{{context.mood.id}}">{{context.mood.Mood}}</option>
+                                <option disabled></option>
+                                {% for i in context.Edata|dictsort:"Mood" %}
+                                <option value="{{i.id}}">{{i.Mood}}</option>
+                                {% endfor %}
+                              </select>
+                            </div>
+                            <button  type="button" class="remove-groupselect" title="Remove Selected Mood" data-group="moodselect">&times;</button>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="mc-collab-group">
+                        <label for="" title="This is the notification icon">Collaborators </label>
+                        <div class="collaborators-div">
+        
+                          <select class="collab1" name="collab1" title="Add / Select Collaborators" id="">
+                            <option value="{% if context.collab1 %}{{ context.collab1.id }}{% endif %}">{% if context.collab1 %}{{context.collab1.UsrName}}{% else %}None{% endif %}</option>
+                            <option disabled></option>
+                            {% for i in context.FollowData|dictsort:"UsrName" %}
+                            <option value="{{i.id}}">{{i.UsrName}}</option>
+                            {% endfor %}
+                          </select>
+                          <button type="button" class="remove-collab" title="Remove Collaborator 1" data-collab="collab1">&times;</button>
+        
+                          <select class="collab2" name="collab2" title="Add / Select Collaborators" id="">
+                            <option value="{% if context.collab2 %}{{ context.collab2.id }}{% endif %}">{% if context.collab2 %}{{context.collab2.UsrName}}{% else %}None{% endif %}</option>
+                            <option disabled></option>
+                            {% for i in context.FollowData|dictsort:"UsrName" %}
+                            <option value="{{i.id}}">{{i.UsrName}}</option>
+                            {% endfor %}
+                          </select>
+                          <button  type="button" class="remove-collab" title="Remove Collaborator 2" data-collab="collab2">&times;</button>
+        
+                          <select class="collab3" name="collab3" title="Add / Select Collaborators" id="">
+                            <option value="{% if context.collab3 %}{{ context.collab3.id }}{% endif %}">{% if context.collab3 %}{{context.collab3.UsrName}}{% else %}None{% endif %}</option>
+                            <option disabled></option>
+                            {% for i in context.FollowData|dictsort:"UsrName" %}
+                            <option value="{{i.id}}">{{i.UsrName}}</option>
+                            {% endfor %}
+                          </select>
+                          <button  type="button" class="remove-collab" title="Remove Collaborator 3" data-collab="collab3">&times;</button>
+
+        
+                        </div>
+                      </div>
+        
+                      <div class="mc-collab-group">
+                        <label for="">Roles </label>
+                        <div class="collaborators-div">
+        
+                          <input  type="text" placeholder="Collaborator 1 Role" title="Collaborator 1 Role" value="{{context.c1role}}" autocomplete="off" name="c1role" >
+        
+                          <input  type="text" placeholder="Collaborator 2 Role" title="Collaborator 2 Role" value="{{context.c2role}}" autocomplete="off" name="c2role">
+        
+                          <input  type="text" placeholder="Collaborator 3 Role" title="Collaborator 3 Role" value="{{context.c3role}}" autocomplete="off" name="c3role">
+        
+                        </div>
+                      </div>
+
+                </div>
+              </form>
+            </div>
+
+            <div class="footer">
+              <div class="footer-section">
+                  <h4>Tunely</h4>
+                  <ul>
+                      <li><a href="#">About</a></li>
+                      <li><a href="#">Origin</a></li>
+                  </ul>
+              </div>
+              
+              <div class="footer-section">
+                  <h4>Community</h4>
+                  <ul>
+                      <li><a href="{% url 'Creator:SignUp' %}">For Artists</a></li>
+                      <li><a href="#">Advertising</a></li>
+                  </ul>
+              </div>
+              
+              <div class="footer-section">
+                  <h4>Social</h4>
+                  <ul>
+                      <li><a href="#"> <i class="bi bi-envelope"></i> Mail</a></li>
+                      <li><a href="#"> <i class="bi bi-twitter-x"></i> Twitter</a></li>
+                      <li><a href="#"> <i class="bi bi-instagram"></i> Instagram</a></li>
+                  </ul>
+              </div>
+              
+              <div class="footer-section">
+                  <h4>Useful Links</h4>
+                  <ul>
+                      <li><a href="#">Support</a></li>
+                      <li><a href="#">Terms of Use</a></li>
+                      <li><a href="#">Privacy Policy</a></li>
+                  </ul>
+              </div>
+      
+              <div class="footer-line"></div>
+              
+              <div class="footer-copyright">
+                  <p>&copy; 2024 Tunely</p>
+              </div>
+          </div>
+        </div>    
+    </div>
+
+    <div class="confirm-modal-container" id="confmodalcont">
+      <div class="modal-content-confirm"  id="confinnercont" >
+              <span class="close" id="closeconfmodal">&times;</span>
+              <div class="warning-icon"><i class="bi bi-exclamation-triangle"></i></div>
+              <h3>Are You Sure You Want to Delete This Song?</h3>
+              <h5>Once deleted, the item cannot be recovered.</h5>
+              <a href="{% url 'Creator:delete_music' context.songid %}"><button type="submit">Confirm </button></a>
+          </div>
+      </div>
+   <div class="overlay-confirm" id="overlayconfirm"></div>
+
+   <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+   <script src="{% static 'CrAssets/js/playeditsong.js ' %}"></script>  
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+          document.querySelectorAll(".remove-collab").forEach(function (button) {
+            button.addEventListener("click", function () {
+                var collabId = this.getAttribute("data-collab");
+                document.querySelector("." + collabId).value = "";
+                });
+            });
+        });
+        document.addEventListener("DOMContentLoaded", function () {
+          document.querySelectorAll(".remove-groupselect").forEach(function (button) {
+            button.addEventListener("click", function () {
+                var groupId = this.getAttribute("data-group");
+                document.querySelector("." + groupId).value = "";
+              });
+          });
+        });
+
+
+
+        document.getElementById('fileInput').addEventListener('change', function(event) {
+        const selectedImage = document.getElementById('selectedNewImage');
+        const currentImage = document.getElementById('currentImage');
+        const file = event.target.files[0];
+
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                selectedImage.src = e.target.result;
+                currentImage.src = e.target.result; 
+            };
+            reader.readAsDataURL(file);
+        } else {
+            selectedImage.src = '#';
+        }
+    });
+
+        document.addEventListener('DOMContentLoaded', function() {
+
+            document.getElementById('confirmmodal').addEventListener('click', function() {
+                document.getElementById('confinnercont').style.display = 'block';
+                document.getElementById('overlayconfirm').style.display = 'block';
+                document.getElementById('confmodalcont').style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            });
+
+            document.getElementById('closeconfmodal').addEventListener('click', function() {
+                document.getElementById('confinnercont').style.display = 'none';
+                document.getElementById('overlayconfirm').style.display = 'none';
+                document.getElementById('confmodalcont').style.display = 'none';
+                document.body.style.overflow = 'auto'; 
+            });
+        });
+
+    </script>
+
+   <script>
+        var imageUrl = "{{ context.cover }}";
+        var card = document.getElementById('card');
+
+        var img = new Image();
+        img.crossOrigin = 'Anonymous'; 
+        img.src = imageUrl;
+
+        img.onload = function() {
+            var canvas = document.createElement('canvas');
+            var ctx = canvas.getContext('2d');
+
+            canvas.width = img.width;
+            canvas.height = img.height;
+
+            ctx.drawImage(img, 0, 0, img.width, img.height);
+
+            var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+
+            var sumRed = 0;
+            var sumGreen = 0;
+            var sumBlue = 0;
+
+            for (var i = 0; i < imageData.length; i += 4) {
+                sumRed += imageData[i];
+                sumGreen += imageData[i + 1];
+                sumBlue += imageData[i + 2];
+            }
+
+            var avgRed = Math.round(sumRed / (imageData.length / 4));
+            var avgGreen = Math.round(sumGreen / (imageData.length / 4));
+            var avgBlue = Math.round(sumBlue / (imageData.length / 4));
+
+            var darknessFactor = .7; 
+            var darkenedRed = Math.round(avgRed * darknessFactor);
+            var darkenedGreen = Math.round(avgGreen * darknessFactor);
+            var darkenedBlue = Math.round(avgBlue * darknessFactor);
+
+        card.style.backgroundColor = 'rgb(' + darkenedRed + ',' + darkenedGreen + ',' + darkenedBlue + ')';
+    };
+</script>
+</body>
+</html>
+{% endblock content %}

@@ -1,0 +1,52 @@
+{% extends 'UserTemp/User_Index.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Tunely</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cantora+One&family=Roboto:wght@900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'UsrAssets/css/style.css ' %}"/>
+    <script>
+        var scrollPosition = sessionStorage.removeItem('scrollPosition');
+
+        if (scrollPosition) {
+            document.querySelector('.body-container').scrollTop = scrollPosition;
+        }
+
+        window.addEventListener('beforeunload', function () {
+            sessionStorage.setItem('scrollPosition', document.querySelector('.body-container').scrollTop);
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            var bodyContainer = document.querySelector('.body-container');
+            bodyContainer.addEventListener('scroll', function () {
+            
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="Aboutus-container">
+        <img src="{% static 'Crassets/img/back1.jpg' %}" alt="" srcset="">
+        <div class="text-space">
+            <h1>About Us</h1>
+            <h2>Exploring Limitless Melodies</h2>
+            <p>Tunely opens the door to an expansive world of melodies, genres, and artists. Whether you're into the rhythmic beats of hip-hop, the soulful tunes of jazz, or the electrifying energy of rock, Tunely has it all. Our vast library ensures that you have access to an extensive collection of songs, allowing you to curate the perfect playlist for every mood and occasion.</p>
+            <h3>Create, Share, Connect</h3>
+            <p>One of Tunely's standout features is the ability to create and share playlists effortlessly. Build your personalized playlists, explore curated lists from other users, and share your musical discoveries with friends. Tunely is not just a music streaming platform; it's a social hub where users connect through the universal language of music.</p>
+
+        </div>
+
+        <div class="app-name">
+            <p>T</p><p>u</p><p>n</p><p>e</p><p>l</p><p>y</p>
+        </div>
+
+    </div>
+</body>
+</html>
+{% endblock content %}

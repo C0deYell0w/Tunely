@@ -1,0 +1,330 @@
+{% extends 'CreatorTemp/CrIndex.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tunely</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cantora+One&family=Roboto:wght@900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'CrAssets/css/style.css ' %}"/>
+    <script src="{% static 'CrAssets/js/resetposition.js ' %}"></script>   
+</head>
+<body>
+    <div class="page-container" >
+        <div class="banner-img-container">
+            {% if CR.Profile_Banner %}
+                <img src="{{ CR.Profile_Banner.url }}" alt="" srcset="">
+            {% else %}
+                <img src="{% static 'CrAssets/img/bannerdefault.jpg ' %}" alt="" srcset="">
+            {% endif %}        
+        </div>
+            <div class="profile-body">
+                <div class="profile-image">
+                    {% if CR.Profile_Picture %}
+                        <img src="{{ CR.Profile_Picture.url }}" alt="" srcset="">
+                    {% else %}
+                        <img src="{% static 'CrAssets/img/profiledefault.jpg ' %}" alt="" srcset="">
+                    {% endif %}
+                </div>
+                <div class="creator-info">
+                    <h3>{{CR.UsrName}}</h3>
+                    <h5>{{CR.MusicRole}}</h5>
+                </div>
+                <div class="profile-data-updates">
+                    <h5>{{follower_count}} Followers</h5>
+                    <div class="follow-unfollow">
+                        {% if is_following %}
+                            <a href="{% url 'Creator:Unfollow' CR.id %}"><button>Unfollow</button></a>
+                        {% else %}
+                            <a href="{% url 'Creator:Followfn' CR.id %}"><button>Follow</button></a>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="target-buttons">
+                    
+                    {% if ALdata %}<button onclick="scrollToSection('section1')">Albums</button> {% endif %}
+                    {% if Allmusic %}<button onclick="scrollToSection('section2')">All Somgs</button> {% endif %}
+                    {% if Playlist %}<button onclick="scrollToSection('section3')">Playlists</button> {% endif %}
+                    {% if collabs %}<button onclick="scrollToSection('section4')">Collaborations</button>{% endif %}
+                    <button onclick="scrollToSection('section5')">About</button>
+                </div>
+
+                {% if Mdata %}
+                <div class="artist-popular-songs">
+                   
+                    <h4>Most Played</h4> 
+                    <table>
+                        {% for i in Mdata %}
+                        <tr style="padding-bottom: 20px;">
+                            <td style="width: 6%;"><img src="{{ i.cover_art.url }}" alt=""></td>
+                            <td style="width: 24%; overflow: hidden; white-space: nowrap;"><div class="{% if i.Title|length > 17 %}table-title-div{% endif %}">{{ i.Title }}</div></td>
+                            <td style="width: 35%; overflow: hidden; white-space: nowrap;" >
+                                <div class="{% if i.CrId.UsrName and i.collaborator_1.UsrName and i.collaborator_2.UsrName|length > 10 %}table-artists{% endif %}">
+                                <a href="{% url 'Creator:ViewProfile' i.CrId.id %}">{{ i.CrId.UsrName }}</a>
+                                {% if i.collaborator_1 %}{% with i.collaborator_1 as collab1 %}, <a href="{% url 'Creator:ViewProfile' collab1.id %}">{{ collab1.UsrName }}</a>{% endwith %}{% endif %} 
+                                {% if i.collaborator_2 %}{% with i.collaborator_2 as collab2 %}, <a href="{% url 'Creator:ViewProfile' collab2.id %}">{{ collab2.UsrName }}</a>{% endwith %}{% endif %}
+                                {% if i.collaborator_3 %}{% with i.collaborator_3 as collab3 %}, <a href="{% url 'Creator:ViewProfile' collab3.id %}">{{ collab3.UsrName }}</a>{% endwith %}{% endif %}
+                               </div>
+                            </td>
+                            <td style="width: 15%;  white-space: nowrap; text-align: center;">85603722  <i class="bi bi-suit-heart"></i></td>
+                            <td style="width: 5%;" >
+                                <div class="search-play-icon" data-song-id="{{ i.id }}">         
+                                    <a href="#" class="play-music" >
+                                        <span><i class="bi bi-play-fill"></i></span>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </table>  
+                    
+                </div>
+                {% else %}
+                <br><br><br><br>
+                {% endif %}
+                
+
+
+                {% if ALdata %}
+                <div class="albums-container" id="section1">
+                    <h4>Albums</h4>
+                    {% for i in ALdata %}
+                    <div class="item-container">
+                        <a href="{% url 'Creator:ViewAlbum' i.id %}">
+                        <div class="items-card">
+                            <div class="album-cover-playicon-container">
+                                <div class="albumcover-playicon" data-album-id="{{ i.id }}">                                              
+                                    <span><i class="bi bi-play-fill"></i></span>
+                                </div>
+                            </div>
+                            <img src="{{i.Album_Cover.url}}" alt="">
+                        </div>
+                        <h5 class="{% if i.Album_Name|length > 10 %}scrolling-text{% endif %}">{{i.Album_Name}}</h5>
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+
+
+                {% if Allmusic %}
+                <div class="artist-popular-songs-all" id="section2">
+                    <h4>All Songs</h4>
+                    <table>
+                        {% for i in Allmusic reversed %}
+                        <tr style="padding-bottom: 20px;">
+                            <td style="width: 6%;"><img src="{{ i.cover_art.url }}" alt=""></td>
+                            <td style="width: 24%; overflow: hidden; white-space: nowrap;"><div class="{% if i.Title|length > 17 %}table-title-div{% endif %}">{{ i.Title }}</div></td>
+                            <td style="width: 35%; overflow: hidden; white-space: nowrap;" >
+                                <div class="{% if i.CrId.UsrName and i.collaborator_1.UsrName and i.collaborator_2.UsrName|length > 10 %}table-artists{% endif %}">
+                                <a href="{% url 'Creator:ViewProfile' i.CrId.id %}">{{ i.CrId.UsrName }}</a>
+                                {% if i.collaborator_1 %}{% with i.collaborator_1 as collab1 %}, <a href="{% url 'Creator:ViewProfile' collab1.id %}">{{ collab1.UsrName }}</a>{% endwith %}{% endif %} 
+                                {% if i.collaborator_2 %}{% with i.collaborator_2 as collab2 %}, <a href="{% url 'Creator:ViewProfile' collab2.id %}">{{ collab2.UsrName }}</a>{% endwith %}{% endif %}
+                               </div>
+                            </td>
+                            <td style="width: 15%;  white-space: nowrap; text-align: center;">85603722  <i class="bi bi-suit-heart"></i></td>
+                            <td style="width: 5%;" >
+                                <div class="search-play-icon" data-song-id="{{ i.id }}">         
+                                    <a href="#" class="play-music" >
+                                        <span><i class="bi bi-play-fill"></i></span>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        
+                    </table>  
+                </div>
+                {% endif %}
+
+
+                
+                {% if Playlist %}
+                <div class="playlists-container" id="section3">
+                    <h4>PlayLists</h4>
+                        
+                    {% for i in Playlist %}
+                        <div class="item-container">
+                            <a href="{% url 'Creator:ViewCrPlaylist' i.id %}">
+                                <div class="items-card">
+                                    <div class="album-cover-playicon-container">
+                                        <div class="playlistcover-playicon" data-playlist-id="{{ i.id }}">                                              
+                                            <span><i class="bi bi-play-fill"></i></span>
+                                        </div>
+                                    </div>
+                                    {% if i.Playlist_Cover %}
+                                        <img src="{{i.Playlist_Cover.url}}" alt="">
+                                    {% else %}
+                                        <img src="{% static 'Crassets/img/default playlist cover.jpg' %}" alt="" srcset="">
+                                    {% endif %}
+                                </div>
+                                <h5 class="{% if i.PlaylistName|length > 15 %}scrolling-text{% endif %}">{{i.PlaylistName}}</h5>
+                            </a>
+                        </div>
+                    {% endfor %}    
+                </div>
+                {% endif %}
+
+                {% if collabs %}
+                <div class="artist-popular-songs-all" id="section4">
+                    <h4>Collaborations</h4>
+                    <table>
+                        {% for i in collabs reversed %}
+                        <tr style="padding-bottom: 20px;">
+                            <td style="width: 6%;"><img src="{{ i.cover_art.url }}" alt=""></td>
+                            <td style="width: 24%; overflow: hidden; white-space: nowrap;"><div class="{% if i.Title|length > 17 %}table-title-div{% endif %}">{{ i.Title }}</div></td>
+                            <td style="width: 35%; overflow: hidden; white-space: nowrap;" >
+                                <div class="{% if i.CrId.UsrName and i.collaborator_1.UsrName and i.collaborator_2.UsrName|length > 10 %}table-artists{% endif %}">
+                                <a href="{% url 'Creator:ViewProfile' i.CrId.id %}">{{ i.CrId.UsrName }}</a>
+                                {% if i.collaborator_1 %}{% with i.collaborator_1 as collab1 %}, <a href="{% url 'Creator:ViewProfile' collab1.id %}">{{ collab1.UsrName }}</a>{% endwith %}{% endif %} 
+                                {% if i.collaborator_2 %}{% with i.collaborator_2 as collab2 %}, <a href="{% url 'Creator:ViewProfile' collab2.id %}">{{ collab2.UsrName }}</a>{% endwith %}{% endif %}
+                               </div>
+                            </td>
+                            <td style="width: 15%;  white-space: nowrap; text-align: center;">85603722  <i class="bi bi-suit-heart"></i></td>
+                            <td style="width: 5%;" >
+                                <div class="search-play-icon" data-song-id="{{ i.id }}">         
+                                    <a href="#" class="play-music" >
+                                        <span><i class="bi bi-play-fill"></i></span>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </table>  
+                </div>
+                {% endif %}
+                
+
+                <div class="about-the-cr-container" id="section5">
+                    <h4>About {{CR.UsrName}}</h4>
+                    <div class="about-the-cr">
+                        <table>
+                            <tr>
+                              <td>Name</td>
+                              <td>:</td>
+                              <td>{{CR.FullName}}</td>
+                            </tr>
+                            <tr>
+                              <td>Stage Name</td>
+                              <td>:</td>
+                              <td>{{CR.UsrName}}</td>
+                            </tr>
+                            <tr>
+                              <td>Country</td>
+                              <td>:</td>
+                              <td>{{CR.Country}}</td>
+                            </tr>
+                            <tr>
+                              <td>Joined Tunely Since</td>
+                              <td>:</td>
+                              <td>{{ CR.doj|date:"m-Y" }}</td>
+                            </tr>
+                          </table>
+                    </div>
+                </div>
+
+
+
+                <div class="footer">
+                    <div class="footer-section">
+                        <h4>Tunely</h4>
+                        <ul>
+                            <li><a href="#">About</a></li>
+                            <li><a href="#">Origin</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-section">
+                        <h4>Community</h4>
+                        <ul>
+                            <li><a href="{% url 'Creator:SignUp' %}">For Artists</a></li>
+                            <li><a href="#">Advertising</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-section">
+                        <h4>Social</h4>
+                        <ul>
+                            <li><a href="#"> <i class="bi bi-envelope"></i> Mail</a></li>
+                            <li><a href="#"> <i class="bi bi-twitter-x"></i> Twitter</a></li>
+                            <li><a href="#"> <i class="bi bi-instagram"></i> Instagram</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-section">
+                        <h4>Useful Links</h4>
+                        <ul>
+                            <li><a href="#">Support</a></li>
+                            <li><a href="#">Terms of Use</a></li>
+                            <li><a href="#">Privacy Policy</a></li>
+                        </ul>
+                    </div>
+            
+                    <div class="footer-line"></div>
+                    
+                    <div class="footer-copyright">
+                        <p>&copy; 2024 Tunely</p>
+                    </div>
+                </div>
+    
+
+
+            </div>
+            <div class="modal-container" id="modalcontainer">
+                <div class="modal-content"  id="myModal" >
+                    <span class="close" id="closeModal">&times;</span>
+                    <form method="post" action="{% url 'Creator:CrAlbums' %}" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <label for="textInput">Album Name:</label>
+                        <input type="text" id="textInput" required="" autocomplete="off" name="albumname">
+                        <label for="imageInput">Cover Image:</label>
+                        <div class="album-img-div">
+                            <div class="coverup"><span>Upload</span></div>
+                            <input type="file" id="imageInput" required="" name="albumcover">
+                        </div>
+                        <button type="submit" id="saveButton">Create</button>
+                    </form>
+                </div>
+            </div>
+            <div class="overlay-albumsadd" id="overlay"></div>        
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="{% static 'CrAssets/js/playmusic.js ' %}"></script>   
+    <script src="{% static 'CrAssets/js/playfromcover.js ' %}"></script>
+     
+    <script>
+        function scrollToSection(sectionId) {
+            var section = document.getElementById(sectionId);
+            if (section) {
+                section.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+
+        document.getElementById('openModal').addEventListener('click', function() {
+            document.getElementById('myModal').style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('modalcontainer').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        });
+
+        document.getElementById('closeModal').addEventListener('click', function() {
+            document.getElementById('myModal').style.display = 'none';
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('modalcontainer').style.display = 'none';
+            document.body.style.overflow = 'auto'; 
+        });
+
+
+    });
+    </script>
+</body>
+</html>
+{% endblock content %}

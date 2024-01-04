@@ -1,0 +1,83 @@
+{% extends 'CreatorTemp/CrIndex.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tunely</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@700&family=Merienda:wght@800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'CrAssets/css/style.css ' %}"/>
+
+</head>
+<body>
+  <div class="parent-div-bg">
+    <img src="{% static 'CrAssets/img/forms/concert-1.jpg ' %}" alt="">
+    <div class="Cr-sign-up-container">
+      <div id="mc_embed_signup">
+        <form action="" method="post" enctype="multipart/form-data" autocomplete="off">
+          {% csrf_token %}
+          <div id="mc_embed_signup_scroll">
+            <h2>Sign Up As Tunely Creator</h2>
+
+            <div class="mc-field-group">
+              <label for="Cr-Fname">Full Name </label>
+              <input type="text" name="fnaeme" placeholder="" required="" id="Cr-Fname" autocomplete="off">
+            </div>
+
+            <div class="mc-field-group">
+              <label for="Cr-Uname">User Name </label>
+              <input type="text" name="usrname" placeholder="Your Stage Name / Band Name" required="" id="Cr-Uname" autocomplete="off">
+            </div>
+        
+            <div class="mc-radio-group">
+              <label for="cr-role" style="margin-left: 5px;">Musical Role</label>
+              <div class="checkbox-opt" id="cr-role">
+                <div>
+                  <label for="singer">Singer</label>
+                  <input type="radio" id="singer" name="musical-role" value="Singer">
+                </div>
+                <div>
+                  <label for="instrumentalist">Instrumentalist</label>
+                  <input type="radio" id="instrumentalist" name="musical-role" value="Instrumentalist">
+                </div>
+                <div>
+                  <label for="both">Both</label>
+                  <input type="radio" id="both" name="musical-role" value="Singer, Instrumentalist">
+                </div>
+              </div>
+            </div>
+
+            <div class="mc-field-group">
+              <label for="Cr-Country">Country</label>
+              <input type="text" name="country" placeholder="Country You're Based In" required="" autocapitalize="characters" id="Cr-Country" autocomplete="off">
+            </div>
+
+            <div class="mc-field-group">
+              <label for="Cr-Mail">Email Address</label>
+              <input type="email" name="mail"  id="Cr-Mail" autocomplete="off">
+            </div>
+
+            <div class="mc-field-group">
+              <label for="cr-pass"> Password </label>
+              <input type="password" name="pass" id="cr-pass" autocomplete="off">
+            </div>
+
+            <div class="mc-radio-group">
+              <div class="term-con">
+                <input type="checkbox" name="" required="">
+              </div>
+              <span>i accept all the <a href="#">terms and conditions</a> and is obligated to follow them</span>
+            </div>
+            <button type="submit">Sign-up</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+    <script src="{% static 'CrAssets/js/position.js ' %}"></script>
+</body>
+</html>
+{% endblock content %}

@@ -1,0 +1,103 @@
+{% extends 'UserTemp/User_Index.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tunely</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cantora+One&family=Roboto:wght@900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'UsrAssets/css/style.css ' %}"/>
+    <link rel="stylesheet" href="{% static 'CrAssets/css/style.css ' %}"/>
+    <script src="{% static 'UsrAssets/js/reset-Scroller-pos.js' %}"></script>
+</head>
+<body>
+        <div class="page-container" >
+            <div class="banner-img-container">
+                {% if USR.bannerimage %}
+                    <img src="{{ USR.bannerimage.url }}" alt="" srcset="">
+                {% else %}
+                    <img src="{% static 'CrAssets/img/bannerdefault.jpg ' %}" alt="" srcset="">
+                {% endif %}        
+            </div>
+            <div class="profile-body">
+                    <div class="profile-image">
+                        {% if USR.picture %}
+                            <img src="{{ USR.picture.url }}" alt="">
+                        {% else %}
+                            <img src="{% static 'CrAssets/img/profiledefault.jpg' %}" alt="Default Profile Picture">
+                        {% endif %}
+                    </div>
+                    <div class="creator-info">
+                            {% if USR.usr_name %}
+                                <h3>{{USR.usr_name}}</h3>
+                            {% else %}
+                                <h3>{{USR.name}}</h3>
+                            {% endif %}
+
+                        <h5>{{USR.name}}</h5>
+                    </div>
+                    
+                    <div class="profile-data-updates-usr">
+                        <a href="{% url 'User:EditPage' USR.id %}"> <button>Edit Profile</button></a>
+                    </div>
+                <br><br><br><br>
+
+            
+                <div class="playlists-container" id="section3">
+                    <h4>PlayLists</h4>
+                    <div class="item-container-add" onclick="addToPlaylistTrigger()">
+                        <div class="items-card-add" >
+                            <span><i class="bi bi-plus-lg"></i></span>
+                        </div>
+                        <h5>Create New</h5>
+                   </div>
+                   {% if pldata %}
+                    {% for i in pldata %}
+                        <div class="item-container">
+                            <a href="{% url 'User:ViewPlaylist' i.id %}">
+                                <div class="items-card">
+                                    {% if i.Playlist_Cover %}
+                                        <img src="{{i.Playlist_Cover.url}}" alt="">
+                                    {% else %}
+                                        <img src="{% static 'Crassets/img/default playlist cover.jpg' %}" alt="" srcset="">
+                                    {% endif %}
+                                </div>
+                                <h5 class="{% if i.PlaylistName|length > 15 %}scrolling-text{% endif %}">{{i.PlaylistName}}</h5>
+                            </a>
+                        </div>
+                    {% endfor %}    
+                </div>
+            {% endif %}
+
+               
+                <div class="follwing-cr-cont">
+                    <h3>Following Creators</h3>
+                    
+                    {% if Following %}
+                        {% for i in  Following|dictsort:"UsrName" %}
+                        <a href="{% url 'User:ViewProfile' i.id %}">
+                        <div class="follwing-cr-innercont">
+                            {% if i.Profile_Picture %}
+                                <img src="{{i.Profile_Picture}}" alt="" srcset="">
+                            {% else %}
+                                <img src="{% static 'CrAssets/img/profiledefault.jpg ' %}" alt="" srcset="">
+                            {% endif %}
+                            <span>
+                                <h4>{{i.UsrName}}</h4>
+                            </span>
+                        </div></a>
+                        {% endfor %}
+                    {% else %}
+                        <h1>You Haven't followed any creators yet.</h1>
+                    {% endif %}
+                </div>
+                
+            </div>
+        </div>
+</body>
+</html>
+{% endblock content %}

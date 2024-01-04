@@ -1,0 +1,184 @@
+{% extends 'UserTemp/User_Index.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tunely</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cantora+One&family=Roboto:wght@900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'CrAssets/css/style.css ' %}"/>
+
+    <script>
+        var scrollPosition = sessionStorage.removeItem('scrollPosition');
+
+        if (scrollPosition) {
+            document.querySelector('.body-container').scrollTop = scrollPosition;
+        }
+
+        window.addEventListener('beforeunload', function () {
+            sessionStorage.setItem('scrollPosition', document.querySelector('.body-container').scrollTop);
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            var bodyContainer = document.querySelector('.body-container');
+            bodyContainer.addEventListener('scroll', function () {
+            
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="page-container" >
+        <div class="banner-img-container" id="card"></div>
+
+            <div class="profile-body-album">
+
+                <!-- <div class="album-image">
+                    {% if PLdata.Playlist_Cover %}
+                        <img src="{{ PLdata.Playlist_Cover.url }}" alt="" srcset="">
+                    {% else %}
+                        <img src="{% static 'Crassets/img/default playlist cover.jpg' %}" alt="" srcset="">
+                    {% endif %}
+                </div> -->
+  
+                <div class="creator-album-info" style="left: 3rem;">
+                    <span>Language</span>
+                    <h3 style="white-space: nowrap;">{{language.Lang_Char}}</h3>
+                        <div class="cr-info-mini"style=" position:relative; top: 40px; margin-left:-60px">
+                                <h5 >{{language.Lang}} .</h5>
+                            <h4 >{{songs|length}} Songs</h4>
+                        </div>
+                </div>
+
+                <div class="artist-popular-songs-album" >
+                    {% if songs %}
+                    <h4>Songs</h4>
+                    <table>
+                        {% for i in songs %}
+                        <tr style="padding-bottom: 20px;">
+                            <td style="width: 6%;"><img src="{{ i.cover_art.url }}" alt=""></td>
+                            <td style="width: 24%; overflow: hidden; white-space: nowrap;">
+                                <div class="{% if i.Title|length > 17 %}table-title-div{% endif %}">{{ i.Title }}</div>
+                            </td>
+                            <td style="width: 35%; overflow: hidden; white-space: nowrap;" >
+                                <div class="{% if i.CrId.UsrName and i.collaborator_1.UsrName and i.collaborator_2.UsrName and i.collaborator_3.UsrName|length > 10 %}table-artists{% endif %}">
+                                    <a href="{% url 'User:ViewProfile' i.CrId.id %}">{{ i.CrId.UsrName }}</a>
+                                    {% if i.collaborator_1 %}{% with i.collaborator_1 as collab1 %}, <a href="{% url 'User:ViewProfile' collab1.id %}">{{ collab1.UsrName }}</a>{% endwith %}{% endif %} 
+                                    {% if i.collaborator_2 %}{% with i.collaborator_2 as collab2 %}, <a href="{% url 'User:ViewProfile' collab2.id %}">{{ collab2.UsrName }}</a>{% endwith %}{% endif %}
+                                    {% if i.collaborator_3 %}{% with i.collaborator_3 as collab3 %}, <a href="{% url 'User:ViewProfile' collab3.id %}">{{ collab3.UsrName }}</a>{% endwith %}{% endif %}
+                                </div>
+                            </td>
+                            <td style="width: 15%;  white-space: nowrap; text-align: center;">85603722  <i class="bi bi-suit-heart"></i></td>
+                            <td style="width: 5%;">
+                                <div class="search-play-icon" data-song-id="{{ i.id }}">         
+                                    <a href="#" class="play-music" >
+                                        <span><i class="bi bi-play-fill"></i></span>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                    {% else %}
+                    <h1 style="text-align: center; padding-top: 50px;">Empty List.!</h1>  
+                    {% endif %}
+                </div>
+            </div>
+            <div class="footer">
+                <div class="footer-section">
+                    <h4>Tunely</h4>
+                    <ul>
+                        <li><a href="#">About</a></li>
+                        <li><a href="#">Origin</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Community</h4>
+                    <ul>
+                        <li><a href="{% url 'Creator:SignUp' %}">For Artists</a></li>
+                        <li><a href="#">Advertising</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Social</h4>
+                    <ul>
+                        <li><a href="#"> <i class="bi bi-envelope"></i> Mail</a></li>
+                        <li><a href="#"> <i class="bi bi-twitter-x"></i> Twitter</a></li>
+                        <li><a href="#"> <i class="bi bi-instagram"></i> Instagram</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Useful Links</h4>
+                    <ul>
+                        <li><a href="#">Support</a></li>
+                        <li><a href="#">Terms of Use</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+        
+                <div class="footer-line"></div>
+                
+                <div class="footer-copyright">
+                    <p>&copy; 2024 Tunely</p>
+                </div>
+            </div>
+        </div>      
+    </div>
+    
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="{% static 'UsrAssets/js/playmusic.js ' %}"></script>   
+
+
+    
+   <script>
+    var imageUrl = "{% if PLdata.Playlist_Cover %}{{ PLdata.Playlist_Cover.url }}{% else %}{% static 'Crassets/img/default playlist cover.jpg' %}{% endif %}";
+    var card = document.getElementById('card');
+
+    var img = new Image();
+    img.crossOrigin = 'Anonymous'; 
+    img.src = imageUrl;
+
+    img.onload = function() {
+        var canvas = document.createElement('canvas');
+        var ctx = canvas.getContext('2d');
+
+        canvas.width = img.width;
+        canvas.height = img.height;
+
+        ctx.drawImage(img, 0, 0, img.width, img.height);
+
+        var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+
+        var sumRed = 0;
+        var sumGreen = 0;
+        var sumBlue = 0;
+
+        for (var i = 0; i < imageData.length; i += 4) {
+            sumRed += imageData[i];
+            sumGreen += imageData[i + 1];
+            sumBlue += imageData[i + 2];
+        }
+
+        var avgRed = Math.round(sumRed / (imageData.length / 4));
+        var avgGreen = Math.round(sumGreen / (imageData.length / 4));
+        var avgBlue = Math.round(sumBlue / (imageData.length / 4));
+
+        var darknessFactor = 0.9; 
+        var darkenedRed = Math.round(avgRed * darknessFactor);
+        var darkenedGreen = Math.round(avgGreen * darknessFactor);
+        var darkenedBlue = Math.round(avgBlue * darknessFactor);
+
+        card.style.backgroundColor = 'rgb(' + darkenedRed + ',' + darkenedGreen + ',' + darkenedBlue + ')';
+    };
+</script>
+</body>
+</html>
+{% endblock content %}

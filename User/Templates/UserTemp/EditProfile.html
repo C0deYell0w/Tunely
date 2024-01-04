@@ -1,0 +1,53 @@
+{% extends 'UserTemp/User_Index.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tunely</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cantora+One&family=Roboto:wght@900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'UsrAssets/css/style.css ' %}"/>
+
+</head>
+<body>
+<div class="page-container-edit" >
+    <form action="{% url 'User:UpdateProfile' USR.id %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="banner-img-container">
+            <input type="file" name="banner-img" id="">
+            {% if USR.bannerimage %}
+                <img src="{{ USR.bannerimage.url }}" alt="" srcset="">
+            {% else %}
+                <img src="{% static 'CrAssets/img/bannerdefault.jpg ' %}" alt="" srcset="">
+            {% endif %}
+        </div>
+        <div class="profile-body-edits">
+                <div class="profile-image-edit">
+                    <div class="form-item">
+                        <input type="file" name="profile-img" id="">
+                    </div>
+                    {% if USR.picture %}
+                        <img src="{{ USR.picture.url }}" alt="" srcset="">
+                    {% else %}
+                        <img src="{% static 'CrAssets/img/profiledefault.jpg ' %}" alt="" srcset="">
+                    {% endif %}
+                </div>
+                <div class="creator-info-edit">
+                    <label for="">User Name</label>
+                    <input type="text" name="usrname" id="" value="{{USR.usr_name}}" ><br>
+                    <label for="">Name </label>
+                    <input type="text" name="name" id="" value="{{USR.name}}" required=""><br> 
+                </div>
+                <div class="profile-data-edits-updates">
+                    <a href="#"> <button type="submit">Save</button></a>
+                </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>
+{% endblock content %}

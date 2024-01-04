@@ -1,0 +1,64 @@
+{% extends 'CreatorTemp/CrIndex.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tunely</title>
+    <link rel="stylesheet" href="{% static 'CrAssets/css/style.css ' %}"/>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+       $(document).ready(function () {
+            $(".cp-form-elements input").on("focus input", function () {
+                $(this).siblings("label").css("transform", "translateY(-20px) translateX(-8px)");
+            });
+
+            $(".cp-form-elements input").on("blur", function () {
+                if (!$(this).val()) {
+                    $(this).siblings("label").css("transform", "translateY(0) translateX(0)");
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+<div class="change-pass-bg">
+    <img src="/static/CrAssets/img/bannerdefault.jpg" alt="" srcset="">
+    
+    <div class="chng-pass-container">
+        <h3>Change Password</h3>
+        <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+            <div class="cp-form-elements">
+                <label for="">Current Password</label>
+                <span><i class="bi bi-key-fill"></i></span>
+                <input type="password" name="currpass" id="" required="">               
+            </div>
+            {% if ERR %}
+                <div class="cp-error-elements">
+                    <div class="err-msg"><i class="bi bi-exclamation-triangle"></i> {{ ERR }}</div>
+                </div>
+            {% endif %}
+            <div class="cp-form-elements ">
+                <label for="">New Password</label>
+                <span><i class="bi bi-shield-x"></i><i class="bi bi-shield-exclamation"></i><i class="bi bi-shield-check"></i></span>
+                <input type="password" name="newpass" id="new-password" required="">
+            </div>
+            <div class="cp-form-elements">
+                <label for="">Confirm Password</label>
+                <span><i class="bi bi-ban"></i><i class="bi bi-check2-all"></i></span>
+                <input type="password" name="confpass" id="confirm-password" required="">
+                
+            </div>
+            <div class="cp-button-elements">
+                <button type="submit" id="changeButton">CHANGE</button>
+            </div>
+        </form>
+    </div>
+</div>
+    <script src="{% static 'CrAssets/js/min-val.js ' %}"></script>
+</body>
+</html>
+{% endblock content %}

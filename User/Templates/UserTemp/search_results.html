@@ -1,0 +1,175 @@
+{% extends 'UserTemp/User_Index.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search</title>
+    <link rel="stylesheet" href="{% static 'CrAssets/css/style.css ' %}"/>
+
+</head>
+<body>
+
+<div class="search-container">
+        {% if creators_data or albums_data or music_data %}
+            {% if creators_data %}
+                    <div class="artists-section">
+                        <h2>Artists</h2>
+                        {% for creator in creators_data %}
+                            <a href="{% url 'User:ViewProfile' creator.id %}">
+                                <div class="search-profile-container">
+                                    <div class="search-profile-img">
+                                        <img src="{{ creator.profile }}" alt="" srcset="">
+                                    </div>
+                                    <h3> {{ creator.UsrName }}</h3>
+                                </div>
+                            </a>
+                        {% endfor %}     
+                    </div>
+            {% endif %}
+            
+            {% if music_data %}
+                <div class="songs-section">
+                    <h2>Songs</h2>
+                    <div class="search-songs-container">
+                        <table>
+                            {% for music in music_data %}
+                                <tr>
+                                    <td style="width: 8%;"><img src="{{ music.music_cover }}" alt=""></td>
+                                    <td style="width: 15%;  overflow: hidden;">
+                                        <div class="{% if music.Title|length > 17 %}table-title-div{% endif %}">{{ music.Title }}</div>
+                                    </td>
+                                    <td style="overflow:hidden; white-space: nowrap;">
+                                        <div class="{% if music.Creator.UsrName and music.Collab1.UsrName and music.Collab2.UsrName|length > 10 %}search-table-artists{% endif %}">
+                                            <a href="{% url 'User:ViewProfile' music.Creator.id %}">{{ music.Creator.UsrName }}</a>
+                                            {% if music.Collab1 %}{% with music.Collab1 as collab %}, <a href="{% url 'User:ViewProfile' collab.id %}">{{ collab.UsrName }}</a>{% endwith %}{% endif %} 
+                                            {% if music.Collab2 %}{% with music.Collab2 as collab %}, <a href="{% url 'User:ViewProfile' collab.id %}">{{ collab.UsrName }}</a>{% endwith %}{% endif %}
+                                            {% if music.Collab3 %}{% with music.Collab3 as collab %}, <a href="{% url 'User:ViewProfile' collab.id %}">{{ collab.UsrName }}</a>{% endwith %}{% endif %}
+                                        </div>
+                                    </td>
+                                    <td style="width: 12%; white-space: nowrap; padding:15px;">85603722  <i class="bi bi-suit-heart"></i></td>
+                                    <td style="width: 10%">
+                                        <div class="search-play-icon" data-song-id="{{ music.id }}">                                              
+                                            <a href="#" class="play-music" >
+                                            <span><i class="bi bi-play-fill"></i></span>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>     
+                </div>   
+            {% endif %}
+
+            {% if albums_data %}
+                <div class="albums-section">
+                    <h2>Albums</h2>
+                    <div class="search-album-container">
+                        {% for album in albums_data %}
+                        <div class="item-container">
+                            <a href="{% url 'User:ViewAlbum' album.id %}">
+                            <div class="items-card">
+                                <div class="album-cover-playicon-container">
+                                    <div class="albumcover-playicon" data-album-id="{{ album.id }}">                                              
+                                        
+                                        <span><i class="bi bi-play-fill"></i></span>
+                                       
+                                    </div>
+                                </div>
+                                <img src="{{ album.album_img }}" alt="">
+                            </div>
+                            <h5 class="{% if album.Album_Name and album.Creator|length > 8 %}scrolling-text{% endif %}">{{album.Album_Name}} by {{ album.Creator }}</h5>
+                            </a>
+                        </div>
+                        {% endfor %}
+                    </div>     
+                </div>   
+            {% endif %}
+
+
+            {% if creators_and_albums %}
+                {% for creator, albums_for_creator in creators_and_albums.items %}
+                    {% if albums_for_creator %}
+                        <div class="artists-more-section">
+                            <h2>{{ creator }}'s Top 5 Albums</h2>
+                            {% for album_info in albums_for_creator %}
+                                <div class="item-container2">
+                                    <a href="{% url 'User:ViewAlbum' album_info.id %}">
+                                        <div class="items-card">
+                                            <div class="album-cover-playicon-container">
+                                                <div class="albumcover-playicon" data-album-id="{{ album_info.id }}">                                              
+                                                   
+                                                    <span><i class="bi bi-play-fill"></i></span>
+                                                    
+                                                </div>
+                                            </div>
+                                            <img src="{{ album_info.Album_Image }}" alt="">
+                                        </div>
+                                        <h5 class="{% if album_info.Album_Name|length > 10 %}scrolling-text{% endif %}">{{ album_info.Album_Name }}</h5>
+                                    </a>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+
+        {% else %}
+            <div class="no-ersult-found">
+                <h2>No results found for "{{query}}" </h2>
+            </div>
+        {% endif %}
+
+        <div class="footer-search">
+            <div class="footer-section">
+                <h4>Tunely</h4>
+                <ul>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Origin</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Community</h4>
+                <ul>
+                    <li><a href="{% url 'Creator:SignUp' %}">For Artists</a></li>
+                    <li><a href="#">Advertising</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Social</h4>
+                <ul>
+                    <li><a href="#"> <i class="bi bi-envelope"></i> Mail</a></li>
+                    <li><a href="#"> <i class="bi bi-twitter-x"></i> Twitter</a></li>
+                    <li><a href="#"> <i class="bi bi-instagram"></i> Instagram</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Useful Links</h4>
+                <ul>
+                    <li><a href="#">Support</a></li>
+                    <li><a href="#">Terms of Use</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                </ul>
+            </div>
+    
+            <div class="footer-line"></div>
+            
+            <div class="footer-copyright">
+                <p>&copy; 2024 Tunely</p>
+            </div>
+        </div>
+
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+        <script src="{% static 'UsrAssets/js/playmusic.js ' %}"></script>
+        <script src="{% static 'UsrAssets/js/playfromcover.js ' %}"></script>
+            
+</div>
+</body>
+</html>
+{% endblock content %}

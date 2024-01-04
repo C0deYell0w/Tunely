@@ -1,0 +1,613 @@
+    /* CSS CODE FOR PROFILE PAGE */
+
+    .page-container{
+        position: absolute;
+        top: 0;
+        left:0;
+        width: 100%;
+        background-color: transparent;
+        z-index: 0;
+      }
+      .page-container-edit{
+        position: absolute;
+        top: 0;
+        left:0;
+        width: 100%;
+        height: 100%;
+        background-color: transparent;
+        z-index: 0;
+      }
+      .banner-img-container {
+        position:fixed;
+        top: 5;
+        margin-left:.04rem;
+        width: 92.1%;
+        height: 70%;
+        transition: all 0.2s ease-in-out;
+        overflow: hidden;
+        z-index: 0;
+      }
+      .banner-img-container img {
+        position: relative;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    .profile-body {
+      position: relative;
+      background-color: rgba(1, 204, 255, 0.331);
+      top: 10rem;
+      backdrop-filter: blur(20px);
+      border-radius: 15px 15px 0 0;
+      box-shadow: 0 5px 19px 10px rgba(0, 0, 0, 0.339);
+      z-index: 0;
+    }
+    
+    .profile-image
+    {
+      position: absolute;
+      top: -8rem;
+      left: 2rem;
+      height:220px;
+      width:220px;
+      background-color:red;
+      box-shadow: 0 8px 25px 6px rgba(0, 0, 0, 0.456);
+      border-radius: 50%;
+      overflow: hidden;  
+      border:3px solid red;
+      
+    }
+    .profile-image img {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 10;
+    }
+    
+    .creator-info{
+      top: -9.5rem;
+      left: 16.5rem;
+      position: absolute;
+      background-color: transparent;
+      color: white;
+      letter-spacing: 1px;
+      font-family: 'Cantora One', sans-serif;
+      font-family: 'Roboto', sans-serif;
+      text-shadow:1px 4px 9px rgba(0, 0, 0, 0.5);
+    }
+    .creator-info h3{
+      font-size: 2.9rem;
+      text-shadow:1px 4px 9px rgba(0, 0, 0, 0.5);
+    }
+    .creator-info h5{
+      font-size: 1.2rem;
+      margin-top: -2.5rem;
+      text-shadow:1px 4px 9px rgba(0, 0, 0, 0.5);
+    }
+    .profile-data-updates-usr{
+      display: flex;
+      position: absolute;
+      background-color: transparent;
+      left: 16.5rem;
+      top: 1.5rem;
+    }
+    .profile-data-updates-usr a button{
+      color: white;
+      backdrop-filter: blur(10px);
+      border:2px solid white;
+      background-color: transparent;
+      padding: 8px 15px;
+      border-radius: 25px;
+      font-family: 'Cantora One', sans-serif;
+      font-family: 'Roboto', sans-serif;
+      color: #ffffff;
+      font-size: .8rem;
+      letter-spacing: 1px;
+      font-weight: 500;
+      transition: all 0.2s ease-in-out ;
+      box-shadow:0 0 10px 2px #0000003b;
+    }
+    .profile-data-updates-usr a button:hover{
+      scale: 1.03;
+      cursor: pointer;
+      background-color: rgba(6, 53, 86, 0.573);
+      box-shadow:0 5px 15px 4px #0000003e;
+    
+    }
+    .artist-popular-songs{
+      position: absolute;
+      background-color: #272727;
+      top: 9rem;
+      left:2rem;
+      color: #ffffff;
+      border-radius: 15px;
+      width: 93%;
+      padding-bottom: 30px;
+    }
+    .artist-popular-songs h4{
+      position: relative;
+      font-size: 1.3rem;
+      letter-spacing: 1px;
+      margin-left: 30px;
+    }
+    .artist-popular-songs table{
+      width: 94%;
+      background-color: transparent;
+      margin-left: 30px;
+      padding: 10px;
+      border-collapse: collapse;
+      border: none;
+      outline: none;
+      letter-spacing: 1px;
+    
+    }
+    .artist-popular-songs img{
+      width: 50px;
+      height: 50px;
+    }
+    .artist-popular-songs td{
+      padding-left: 20px;
+      padding-top: 4px;
+      padding-bottom: 2px;
+    }
+    
+    .artist-popular-songs tr:hover{
+      background-color: #98979739;
+    }
+    
+
+
+      /* css for edit profile */
+    
+    .profile-body-edits {
+      position: relative;
+      background-color: rgba(1, 204, 255, 0.331);
+      top: 10.5rem;
+      height:50vh; 
+      backdrop-filter: blur(20px);
+      border-radius: 15px 15px 0 0;
+      box-shadow: 0 5px 19px 10px rgba(0, 0, 0, 0.339);
+      z-index: 0;
+    }
+    .creator-info-edit{
+      top: -9.5rem;
+      left: 16.5rem;
+      position: absolute;
+      padding-top: 20px;
+      padding-left: 20px;
+      padding-right: 20px;
+      padding-bottom: 5px;
+      background-color: rgba(42, 42, 42, 0.552);
+      color: white;
+      letter-spacing: 1px;
+      border-radius: 15px;
+      font-family: 'Cantora One', sans-serif;
+      font-family: 'Roboto', sans-serif;
+      z-index: 5;
+    }
+    .creator-info-edit input[type="text"]{
+      display: flex;
+      color: white;
+      font-size: 1.2rem;
+      background-color: transparent;
+      border: none;
+      outline: none;
+      letter-spacing: 1px;
+      border-bottom: 2px solid rgb(255, 255, 255);
+    }
+    
+    .banner-img-container input[type="File"]{
+      position: absolute;
+      top: 5rem;
+      right:0;
+      z-index: 5;
+      color: #ffffff;
+    }
+    
+    .form-item{
+      position: relative;
+      top: 5.5rem;
+      height: 50px;
+      z-index: 15;
+      background-color:rgba(255, 0, 0, 0.334);
+    }
+    
+    .profile-image-edit
+    {
+      position: absolute;
+      top: -8.5rem;
+      left: 2rem;
+      height:220px;
+      width:220px;
+      background-color:red;
+      box-shadow: 0 8px 25px 8px rgba(0, 0, 0, 0.456);
+      border-radius: 50%;
+      overflow: hidden;  
+      border:3px solid red;
+    }
+    .profile-image-edit input[type="File"]{
+      position: absolute;
+      top: 25%;
+      left: 1rem;
+      z-index: 5;
+      color: white;
+    }
+    .profile-image-edit img {
+      position: absolute;
+      top: 0rem;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .profile-data-edits-updates a button{
+      margin-left: 38rem;
+      margin-top: 1.5rem;
+      color: white;
+      backdrop-filter: blur(10px);
+      border:2px solid white;
+      background-color: transparent;
+      padding: 7px 15px 7px 15px;
+      border-radius: 25px;
+      transition: all 0.2s ease-in-out ;
+      box-shadow:0 0 10px 2px #0000003b;
+    }
+    .profile-data-edits-updates a button:hover{
+      scale: 1.2;
+      box-shadow:0 5px 15px 4px #0000003e;
+    }
+    
+        /*  CHANGE PASSWORD  */
+    
+        
+  .change-pass-bg{
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+  }
+      
+  .change-pass-bg img{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+    .chng-pass-container{
+      width: 40%;
+      z-index: 100;
+      padding: 10px;
+      color: white;
+      margin: 0 auto;
+      margin-top :3rem;
+      border-radius:18px;
+      font-family: Segoe UI;
+      letter-spacing: 1px;
+      backdrop-filter: blur(15px);
+      background-color: rgba(56, 56, 56, 0.264);
+      box-shadow: 0 8px 18px 4px rgba(0, 0, 0, 0.277);
+    }
+    
+    .chng-pass-container h3{
+      text-align: center;
+      font-size: 22px;
+
+    }
+    .cp-form-elements {
+      padding: 18px 25px 18px 10px;
+    }
+    .cp-form-elements label{
+      position: absolute;
+      margin-left: 8px;
+      color: #fff;
+      pointer-events: none;
+      transition: .5s;
+    }
+    .cp-form-elements span .bi-key-fill{
+      position: absolute;
+      right: 2rem;
+      scale: 1.6;
+      color: #ffffff;
+    }
+    
+    .cp-form-elements span .bi-shield-x,
+    .cp-form-elements span .bi-shield-exclamation,
+    .cp-form-elements span .bi-shield-check
+    {
+      position: absolute;
+      right: 2rem;
+      scale: 1.5;
+      padding-bottom: 15px;
+    }
+    .cp-form-elements span .bi-shield-x{
+      color: red;
+    }
+    .cp-form-elements span .bi-shield-exclamation{
+      color: yellow;
+    }
+    .cp-form-elements span .bi-shield-check{
+      color: #2bff00;
+    }
+    
+    .cp-form-elements span .bi-ban{
+      position: absolute;
+      right: 2rem;
+      scale: 1.4;
+      color: red;
+      padding-bottom: 15px;
+    }
+    .cp-form-elements span .bi-check2-all{
+      position: absolute;
+      right: 2rem;
+      scale: 1.5;
+      color: #2bff00;
+    }
+    
+    .cp-form-elements input{
+      width: 100%;
+      border: none;
+      outline: none;
+      color: #ffffff;
+      font-size: 1.2rem;
+      letter-spacing: 2px;
+      padding-left: 10px;
+      background-color: transparent;
+      border-bottom: 2px solid white;
+    }
+    
+    .cp-button-elements button{
+      width: 30%;
+      color: white;
+      text-align: center;
+      border-radius: 15px;
+      letter-spacing: 2px;
+      margin: 20px 35% 20px 35%;
+      padding: 8px 10px 8px 10px;
+      border: 2px solid white;
+      background-color: transparent;
+      transition: all 0.3s ease-in-out;
+      box-shadow: 0 5px 15px 3px rgba(0, 0, 0, 0.365);
+    }
+    
+    .cp-button-elements button:hover{
+      transform: scale(1.05);
+      background-color: rgba(0, 191, 255, 0.353);
+      box-shadow: 4px 7px 18px 4px rgba(0, 0, 0, 0.504);
+    }
+    
+    .cp-error-elements {
+      padding: 1px 25px 2px 10px;
+    }
+    
+    .err-msg{
+      width: 100%;
+      text-align: center;
+      font-size: 14px;
+      font-weight: 300;
+      letter-spacing: 1px;
+      color: rgb(255, 255, 255);
+      padding: 8px;
+      border-radius: 8px;
+      background: rgba(0, 14, 26, 0.379);
+    }
+    .err-msg .bi{
+      color: #ffff;
+      font-size: 18px;
+    }
+
+  .Aboutus-container{
+      overflow: auto;
+      background-color: #000000ba;
+      height: 100%;
+      width:100%;
+    }
+
+    .Aboutus-container img{
+      position: absolute;
+      top: -1rem;
+      width:  100%;
+      height: 110%;
+      object-fit: cover;
+      background: no-repeat;
+      opacity: 0;
+      animation:fadeInimg 0.9s ease-in-out forwards;
+    }
+
+    @keyframes fadeInimg {
+      0% {
+          opacity: 0;
+      }
+      100% {
+          opacity: 1;
+      }
+  }
+
+    .text-space {
+      position: absolute;
+      top: 53%;
+      left: 28%;
+      transform: translate(-50%, -50%);
+      background-color: rgba(0, 0, 0, 0.48);
+      width: 580px;
+      height: 0;
+      border-radius: 10px;
+      animation: expandTextSpace 1.5s forwards;
+      cursor: default;
+      /* animation-delay: 1.5s; */
+  }
+
+  @keyframes expandTextSpace {
+      0% {
+          height: 0;
+          opacity: 20%;
+          backdrop-filter: blur(0px);
+      }
+
+      100% {
+          height: 410px;
+          opacity: 100%;
+          backdrop-filter: blur(5px);
+      }
+  }
+
+
+  .app-name {
+    position: absolute;
+    right: 9rem;
+    top: 35%;
+  }
+
+.app-name p {
+    display: inline-block;
+    margin: 0;
+    font-size: 80px;
+    cursor: default;
+    letter-spacing: 1px;
+    font-family: 'El Messiri', sans-serif;
+    font-family: 'Merienda', cursive;
+    opacity: 0;
+    animation: fallAndBounce 1.5s forwards, fadeIn 0.5s ease-in-out forwards;
+  }
+
+@keyframes fallAndBounce {
+    0% {
+        transform: translateY(-200px);
+    }
+    30% {
+        transform: translateY(0);
+    }
+    60% {
+        transform: translateY(-50px);
+    }
+    80% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(-5px);
+    }
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+p:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+p:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+p:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+p:nth-child(4) {
+    animation-delay: 0.4s;
+}
+
+p:nth-child(5) {
+    animation-delay: 0.5s;
+}
+p:nth-child(6) {
+    animation-delay: 0.6s;
+}
+
+.text-space h1{
+  color: #fff; 
+  overflow: hidden; 
+  font-family: Segoe UI;
+  position: absolute;
+  margin-left: 230px;
+  margin-top: 20px;
+  animation: fadeIntext 1s forwards,slideintext 1s ease-in-out forwards;
+  animation-delay: .5s;
+  font-size: 30px;
+  opacity:0;
+}
+.text-space h2{
+  color: #fff; 
+  overflow: hidden; 
+  font-family: Segoe UI;
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  position: absolute;
+  margin-top: 70px;
+  margin-left: 40px;
+  animation: fadeIntext 1.8s forwards,slideintext2 1s ease-in-out forwards;
+  position: absolute;
+  animation-delay: 1.3s;
+  font-size: 18px;
+  opacity:0;
+}
+.text-space p {
+    color: #fff; 
+    overflow: hidden; 
+    font-family: Segoe UI;
+    position: absolute;
+    margin-top: 110px;
+    font-size: 14px;
+    text-align: justify;
+    margin-left: 40px;
+    margin-right: 40px;
+    opacity: 0;
+    animation: fadeIntext 1.8s forwards;
+    animation-delay: 1.8s;
+}
+
+.text-space  h3{
+  color: white;
+  font-family: Segoe UI;
+  font-size: 18px;
+  margin-top: 230px;
+  margin-left: 40px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  animation: fadeIntext 1.8s forwards,slideintext 1s ease-in-out forwards;
+  animation-delay: 2.2s;
+  opacity:0;
+}
+.text-space p:last-child{
+  margin-top: 0px;
+  animation-delay:2.7s ;
+}
+
+@keyframes fadeIntext {
+   0% {
+      opacity: 0;
+  }
+  100% {
+      opacity: 1;
+  }
+
+}
+@keyframes slideintext {
+  0% {
+      transform: translatex(-200px);
+  }
+  100% {
+      transform: translatex(0px);
+  }
+}
+
+@keyframes slideintext2 {
+  0% {
+      transform: translatex(-200px);
+  }
+  100% {
+      transform: translatex(0px);
+  }
+}
+ 

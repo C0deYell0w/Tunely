@@ -1,0 +1,180 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tunely</title>
+    <link rel="icon" href="{% static 'UsrAssets/img/favicon.ico' %}" type="image/x-icon">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{% static 'UsrAssets/css/forms-dow.css' %}"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@700&family=Merienda:wght@800&display=swap" rel="stylesheet"> 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+  {% load socialaccount %}
+
+    <div class="login-box">
+        <div class="logo-text">
+          <h2>Tunely</h2>
+        </div>
+        <form method="POST" action="{% url 'User:SignUp'%}" autocomplete="off" enctype="multipart/form-data">
+        {% csrf_token %}
+            <div class="user-box">
+                <input type="text" name="Name" autocomplete="off" required="">
+                <label>Name</label>
+             </div>
+            <div class="user-box">
+                <input type="email" name="mail" autocomplete="off" required="">
+                <label>Email</label>
+            </div>
+            <div class="user-box">
+                <input type="password" name="pass" autocomplete="off" id="pass" required="">
+                <span><i class="bi bi-shield-x"></i><i class="bi bi-shield-exclamation"></i><i class="bi bi-shield-check"></i></span>
+                <label>Password</label>
+            </div>
+            <div class="user-box">
+                <span><i class="bi bi-ban"></i><i class="bi bi-check2-all"></i></span>
+                <input type="password" name="" autocomplete="off" id="chkpass" required="">
+                <label>Confirm Password</label>
+            </div>
+          
+          <div class="login-links">
+            <span class="link-3">Already have an account ?</span>
+            <span class="link-1"><a href="{% url 'User:Login'%}">Log In</a></span>
+          </div>
+          <div class="submit-btn">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <button type="submit" id="submitbutton">Sign-Up</button>
+          </div>
+        </form>
+        <div class="split-div">
+          <svg class="svg1">
+            <line x1="1" y1="10" x2="100%" y2="10" style="stroke:rgb(255, 255, 255);stroke-width:1" />
+          </svg>
+          <p>OR</p>
+          <svg class="svg2">
+            <line x1="1" y1="10" x2="100%" y2="10" style="stroke:rgb(255, 255, 255);stroke-width:1" />
+          </svg>
+        </div>
+          
+          <div class="google-signin">
+            <a href="{% provider_login_url 'google' %}"><img src="{% static 'UsrAssets/icon/google.png' %}" alt="" srcset=""></a>
+            <button><a href="{% provider_login_url 'google' %}"> Continue With Google</a></button>
+          </div>
+          <div class="signup-links">
+            <span class="link-1"><a href="{% url 'Creator:SignUp' %}">For Artists</a></span>
+          </div>
+    </div>
+    <div class="popup-message" id="popup-message" >
+      <div class="popup-content">
+          <div class="success-animation">
+            <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+              <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" />
+              <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
+            </svg>
+          </div>
+          <p id="popup-text"></p>
+      </div>
+  </div>
+
+  <div class="warning-message" id="warning-message" >
+    <div class="popup-content">
+      <div class="f-modal-alert">
+        <div class="f-modal-icon f-modal-warning scaleWarning">
+            <span class="f-modal-body pulseWarningIns"></span>
+            <span class="f-modal-dot pulseWarningIns"></span>
+        </div>
+      </div>
+        <p id="popup-text-warn"></p>
+    </div>
+  </div>
+
+  <div class="login-overlay" id="overlaylog"></div>
+
+    <script>
+      
+        const banIcon = $("#chkpass").siblings("span").find(".bi-ban").hide();
+        const checkIcon = $("#chkpass").siblings("span").find(".bi-check2-all").hide();
+        const passwordInput = $("#pass");
+        const newPasswordInput = $("#chkpass");
+        const Subbtn = $('#submitbutton');
+        const shieldXIcon = $("#pass").siblings("span").find(".bi-shield-x").hide();
+        const shieldExclamationIcon = $("#pass").siblings("span").find(".bi-shield-exclamation").hide();
+        const shieldCheckIcon = $("#pass").siblings("span").find(".bi-shield-check").hide();
+
+        $("#pass").on("input", function () {
+            const passwordLength = $(this).val().length;
+                if (passwordLength > 0) {
+                    shieldXIcon.toggle(passwordLength < 5);
+                    shieldExclamationIcon.toggle(passwordLength >= 5 && passwordLength < 6);
+                    shieldCheckIcon.toggle(passwordLength >= 6);
+                } else {
+                    shieldXIcon.hide();
+                    shieldExclamationIcon.hide();
+                    shieldCheckIcon.hide();
+                }
+            });
+
+        $("#pass,#chkpass").on("input focus", function () {
+            const newPassword = $("#pass").val();
+            const currentPassword = $("#chkpass").val();
+            const currentPasswordLength = currentPassword.length;
+            const newPasswordLength = $(this).val().length;
+
+            if (currentPasswordLength === 0) {
+                banIcon.hide();
+                checkIcon.hide();
+            } else if (newPassword === currentPassword) {
+                banIcon.hide();
+                checkIcon.show();
+                Subbtn.prop('disabled', false);
+            } else {
+                banIcon.show();
+                checkIcon.hide();
+                Subbtn.prop('disabled', true);
+            }
+
+            if (currentPasswordLength === 0 || newPasswordLength < 5) {
+                Subbtn.prop('disabled', true);
+            } else {
+                Subbtn.prop('disabled', false);
+            }
+        });
+
+        
+    
+     setTimeout(function() {
+          function closePopup() {
+              document.getElementById('popup-message').style.display = 'none';
+              document.getElementById('warning-message').style.display = 'none';
+              document.getElementById('overlaylog').style.display = 'none';
+          }
+      
+          setTimeout(function() {
+              closePopup();
+          }, 3500);
+
+          {% if messages_to_display %}
+            {% for message in messages_to_display %}
+                {% if message.tags == 'warning' %}
+                    document.getElementById('popup-text-warn').innerHTML = '{{ message }}';
+                    document.getElementById('warning-message').style.display = 'block';
+                    document.getElementById('overlaylog').style.display = 'block';
+                {% elif message.tags == 'success' %}
+                    document.getElementById('popup-text').innerHTML = '{{ message }}';
+                    document.getElementById('popup-message').style.display = 'block';
+                    document.getElementById('overlaylog').style.display = 'block';
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    }, 100);
+  </script>
+</body>
+</html>

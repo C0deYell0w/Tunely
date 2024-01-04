@@ -1,0 +1,1285 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="zxx">
+<head>
+	<title>Tunely</title>
+	<meta charset="UTF-8">
+	<meta name="description" content="Tunely">
+	<meta name="keywords" content="music, html">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="{% static 'UsrAssets/img/favicon.ico' %}" type="image/x-icon">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@700&family=Merienda:wght@800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'UsrAssets/css/ind.css ' %}"/>
+    <link rel="stylesheet" href="{% static 'UsrAssets/css/m-player.css ' %}"/>
+
+	
+</head>
+<body>
+    <div class="top-navbar">
+        <div class="icon-container">
+          <div class="logo">
+            <div class="square square1"></div>
+            <div class="square square2"></div>
+            <div id='waves-container' class="waves">  
+              <span></span>  
+              <span></span>  
+              <span></span>   
+              <span></span> 
+              <span></span>  
+            </div>
+            <div class="logo-text"><a href="#"><p>Tunely</p></a></div>
+          </div>
+            <form action="{% url 'User:search' %}" method="get">
+                <div class="search-tab">
+                    <input type="text" name="q" placeholder="Search for your favorite tracks." autocomplete="off" id="search-input">
+                    <i class="bi bi-x-lg" id="clear-icon"></i>
+                    <button type="submit"></button>
+                </div>
+            </form>
+            <!-- <div class="get-premium-button">
+                <a href="#">
+                    <button>Get Premium</button>
+                </a>
+            </div> -->
+          <div class="top-navbar-person-icon">
+              <a href="#"><i class="bi bi-person"></i></a>
+              <div class="dropdown-content">
+                <a href="{% url 'User:UsrProfile' %}">
+                  <i class="bi bi-person" style="color: white;"></i> Profile
+                </a>
+                <a href="{% url 'User:Usrlogout' %}">
+                  <i class="bi bi-box-arrow-right"></i> Log Out
+                </a>
+              </div>
+          </div>
+          <div class="top-navbar-gear-icon">
+              <a href="#"><i class="bi bi-gear"></i></a>
+              <div class="dropdown-content-gear">
+                <div class="accountopen">
+                  <a>
+                    <i class="bi bi-caret-left-fill"></i> Account
+                  </a>
+                </div>
+                <a href="{% url 'User:AboutUs' %}">
+                  <i class="bi bi-justify-left"></i> About Us
+                </a>
+                <a href="#">
+                  <i class="bi bi-telephone-inbound"></i> Contact Us
+                </a>
+                <a href="mailto:tunely2024@gmail.com?subject=Inquiry&body=Hello%20there!">
+                  <i class="bi bi-envelope-at"></i> Mail Us
+                </a>
+                <a href="#">
+                  <i class="bi bi-shield-check"></i> Security
+                </a>
+              </div>
+              <div class="account-manage-dropdwn">
+                  <a href="{% url 'User:UsrChngPass' %}">
+                    <i class="bi bi-key"></i> Change Password
+                  </a>
+                  <a href="436357">
+                    <i class="bi bi-envelope-check"></i> Verify Mail
+                  </a>
+              </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="left-navbar">
+        <div class="left-navbar-non-scrollable-content"> 
+            <div class="left-navbar-home-icon">
+                <a href="{% url 'User:Home' %}"><i class="bi bi-house-door"></i></a>
+            </div>
+            <div class="left-navbar-search-icon" id="searchIconLink">
+                <a><i class="bi bi-search"></i></a>
+            </div>
+        </div>
+        <div class="left-navbar-content">
+            <div class="left-navbar-playlist-icon">
+                <a href="{% url 'User:AllPlaylist' %}"><i class="bi bi-music-note-list"></i></a>
+            </div>  
+            <div class="left-navbar-create-playlist-icon" id="openModal">
+                <a href="#"><i class="bi bi-folder-plus"></i></a>
+            </div>
+            
+            {% if pldata %}
+              {% for i in pldata %}
+              <div class="left-navbar-playlist-card">
+                  <a href="{% url 'User:ViewPlaylist' i.id %}">
+                    {% if i.Playlist_Cover %}
+                      <img src="{{ i.Playlist_Cover.url }}" alt="playlist-name" srcset="">
+                    {% else %}
+                      <img src="{% static 'Crassets/img/default playlist cover.jpg' %}" alt="" srcset="">
+                    {% endif %}
+                  </a>
+              </div>
+              {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+    <div class="modal-playlist-container" id="modalcontainer">
+      <div class="modal-content"  id="myModal" >
+          <span class="close" id="closeModal">&times;</span>
+          <form method="post" action="{% url 'User:CreatePlaylist' %}" enctype="multipart/form-data">
+              {% csrf_token %}
+              <label for="textInput">Playlist Name:</label>
+              <input type="text" id="textInput" autocomplete="off" name="playlistname">
+              <label for="imageInput">Cover Image:</label>
+              <div class="album-img-div">
+                  <div class="coverup"><span>Upload</span></div>
+                  <input type="file" id="imageInput" name="playlistcover">
+              </div>
+              <input type="hidden" name="url" value="{{ request.META.HTTP_REFERER }}">
+              <button type="submit" id="saveButton">Create</button>
+          </form>
+      </div>
+    </div>
+    <!-- body container starts  -->
+    <div class="body-container">
+    <div class="overlay-playlistadd" id="overlayplay"></div>
+
+    <div id="login-message-crhome" class="login-message-crhome">
+      <div class="popup-content">
+          <p id="popup-text"></p>
+      </div>
+    </div>
+      {% block content %}
+
+
+      {% endblock content %}
+      
+    </div>
+    <!-- body container ends -->
+
+    <!-- side panel starts -->
+    <div class="side-panel" id="sidePanel">
+      <div class="sidepanelsonginfo-cont">
+        <div class="sidepanel-maining">
+          <img src="" alt="" srcset="">
+        </div>
+        <div class="sidepanel-songname">
+          <h2></h2>
+        </div>
+
+        <div class="sidepanel-artistscontainer">
+          <h3>Artists</h3>
+          <div class="sidepanel-artistdata">
+            <div class="artistdata-img">
+              <a href="#">
+                <img src="" alt="" srcset="">
+              </a>
+            </div>
+            <div class="artistdata-profile">
+              <a href="#">
+                <h4 class="scrolling-text-sidepanel"></h4>
+              </a> 
+                <h5></h5>
+            </div>
+          </div>
+
+          <!-- <h3 class="collabh3"></h3> -->
+          <div class="sidepanel-artistdata1">
+            <div class="artistdata-img1">
+              <a href="#">
+                <img src="" alt="" srcset="">
+              </a>
+            </div>
+            <div class="artistdata-profile1">
+              <a href="#">
+                <h4 class="scrolling-text-sidepanel"></h4>
+              </a>  
+                <h5></h5>
+            </div>
+          </div>
+
+          <div class="sidepanel-artistdata2">
+            <div class="artistdata-img2">
+              <a href="#">
+                <img src="" alt="" srcset="">
+              </a>
+            </div>
+            <div class="artistdata-profile2">
+              <a href="#">
+                <h4 class="scrolling-text-sidepanel"></h4>
+              </a>  
+              <h5></h5>
+            </div>
+          </div>
+
+          <div class="sidepanel-artistdata3">
+            <div class="artistdata-img3">
+              <a href="#">
+                <img src="" alt="" srcset="">
+              </a>
+            </div>
+            <div class="artistdata-profile3">
+              <a href="#">
+                <h4 class="scrolling-text-sidepanel"></h4>
+              </a>  
+              <h5></h5>
+            </div>
+          </div>
+
+          <div class="sidepanel-albumssect">
+            <h3>Album</h3>
+            <div class="sidepanel-albumscontainer">
+              <div class="sidepanel-albumsimg">
+                <a href="#">
+                  <img src="" alt="" srcset="">
+                </a>
+              </div>
+            <div class="albumsimg-name">
+                <a href="#">
+                  <h4></h4>
+                </a>
+              </div>
+            </div>
+          </div>
+          
+
+          <h3>More Info</h3>
+          <div class="sidepanel-moreinfo">
+            <table>
+              <tr>
+                <td>Genre</td>
+                <td>:</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>Mood</td>
+                <td>:</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>Language</td>
+                <td>:</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>Release Date</td>
+                <td>:</td>
+                <td></td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="sidepanelshortcuts-cont">
+        <h3>Tunely Shortcuts</h3>
+        <table>
+          <tr>
+            <td>Search</td> <td>:</td>
+            <td>
+              <button>ALT</button>+
+              <button>q</button>
+            </td>
+          </tr>
+          <tr>
+            <td>Volume</td> <td>:</td>
+            <td>
+              <button>ALT</button>+
+              <button>v</button>
+            </td>
+          </tr>
+          <tr>
+            <td>Download</td> <td>:</td>
+            <td>
+              <button>ALT</button>+
+              <button>d</button>
+            </td>
+          </tr>
+          <tr>
+            <td>Play/Pause </td><td>:</td>
+            <td>
+              <button>ALT</button>+
+              <button>ArrowDown</button>
+            </td>
+          </tr>
+          <tr>
+            <td>Next Song</td> <td>:</td>
+            <td>
+              <button>ALT</button>+
+              <button>ArrowRight</button>
+            </td>
+          </tr>
+          <tr>
+            <td>Previous Song</td> <td>:</td>
+            <td>
+              <button>ALT</button>+
+              <button>ArrowLeft</button>
+            </td>
+          </tr>
+          <tr>
+            <td>Sidepanel</td> <td>:</td>
+            <td>
+              <button>ALT</button>+
+              <button>w</button>
+            </td>
+          </tr>
+          <tr>
+            <td>New playlist</td> <td>:</td>
+            <td>
+              <button>ALT</button>+
+              <button>n</button>
+            </td>
+          </tr>
+          <tr>
+            <td>Add to playlist</td> <td>:</td>
+            <td>
+              <button>ALT</button>+
+              <button>p</button>
+            </td>
+          </tr>
+
+        </table>
+      </div>
+    </div>
+    <!-- sidepanel ends -->
+
+<!-- bottom navbar starts -->
+	<div class="bottom-navbar">
+    <div class="details-container">
+      <div class="image-wrapper">
+        <div class="music-image">
+          <img src="" id="image-selectore">
+        </div>
+      </div>
+      <div class="music-titles">
+        <a href="">
+          <h4 class="name"></h4>
+          <h5 class="artist"></h5>
+        </a>
+      </div>
+    </div>
+    
+
+    <div class="content">
+      <div class="progress-details">
+        <div class="progress-bar">
+          <span></span>
+        </div>
+        <div class="time">
+          <span class="current">0:00</span>
+          <span class="final">0:00</span>
+        </div>
+      </div>
+      <div class="control-btn">
+        <span class="material-symbols-rounded" id="repeat"><i class="bi bi-repeat"></i></span>
+        <span class="material-symbols-rounded" id="prev"><i class="bi bi-skip-start"></i></span>
+        <div class="play-pause" id="play-pause-icon">
+          <span class="material-symbols-rounded" id="play"><i class="bi bi-play-fill"></i></span>
+        </div>
+        <span class="material-symbols-rounded" id="next"><i class="bi bi-skip-end"></i></span>
+        <span class="material-symbols-rounded" id="shuffle"><i class="bi bi-shuffle"></i></span>
+      </div>
+    </div>
+    <audio class="main-song"></audio>
+
+        <div class="bottom-nav-controls">
+          <div class="sidepanel-controls">
+            <div class="sidepanel-icon" id="sidepanelopen">
+              <i class="bi bi-layout-sidebar-reverse"></i>
+            </div>
+          </div>    
+          <div class="download-button" id="downloadicon" onclick="downloadMusic()">
+            <i class="bi bi-download"></i>
+          </div>  
+          <div class="add-to-playlist" id="addtoplaylisticon">
+            <i class="bi bi-bookmark-plus"></i>
+          </div>
+          <div class="volume-control">
+            <div class="volume-button">
+              <i id="volume-up-icon" class="bi bi-volume-up"></i>
+            </div>
+            <div class="volume-capsule" id="slider-toggle">
+              <div class="volume-slider-control" >
+                <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.5">
+                <div class="mute-button">
+                  <i id="volume-mute-icon" class="bi bi-volume-mute"></i>
+                </div>
+              </div>
+            </div> 
+          </div>
+        </div>
+	  </div>
+
+    <div class="popup-addtoplaylist" id="popupaddtoplaylist">
+      <div class="popup-header">
+          <h3>Add to Playlist</h3>
+          <span class="close-popup-playlist" onclick="closePopup()">&times;</span>
+      </div>
+      <div class="playlist-list">
+        <div class="playlist-item-add" onclick="addToPlaylistTrigger()">
+          <div class="item-playlist-add-add">
+            <div class="items-card-add-add" >
+                <span><i class="bi bi-plus-lg"></i></span>
+            </div>
+          </div>
+          <h4>Create New</h4>
+        </div>
+        <input type="hidden" id="currentlyPlayingSongId">
+        {% if pldata %}
+          {% for i in pldata %}
+          <div class="playlist-item-add"  data-playlist-id="{{i.id}}">
+            <div class="item-playlist-add-add">
+              <div class="items-card-img-add">
+                {% if i.Playlist_Cover %}
+                  <img src="{{i.Playlist_Cover.url}}" alt="">
+                {% else %}
+                  <img src="{% static 'Crassets/img/default playlist cover.jpg' %}" alt="" srcset="">
+                {% endif %}
+              </div>
+            </div>
+            <h4>{{i.PlaylistName}}</h4>
+          </div>
+          {% endfor %}
+        {% endif %}
+      </div>
+    </div>
+  <!-- bottom navbar ends -->
+
+
+    <!-- javascript urls -->
+    <script src="{% static 'CrAssets/js/position.js ' %}"></script>
+    <script src="{% static 'UsrAssets/js/tunely.js ' %}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+      document.addEventListener('keydown', function(event) {
+          if (event.altKey && event.key === 'q') {
+              document.getElementById('searchIconLink').click();
+          }
+          
+      });
+      document.addEventListener('keydown', function(event) {
+          if (event.altKey && event.key === 'w') {
+              document.getElementById('sidepanelopen').click();
+          }
+      });
+      document.addEventListener('keydown', function(event) {
+          if (event.altKey && event.key === 'n') {
+              document.getElementById('openModal').click();
+          }
+      });
+      document.addEventListener('keydown', function(event) {
+          if (event.altKey && event.key === 'p') {
+              document.getElementById('addtoplaylisticon').click();
+          }
+      });
+      document.addEventListener('keydown', function (event) {
+          if (event.altKey && event.key === 'ArrowDown') {
+              event.preventDefault();  
+              document.getElementById('play').click();
+          }
+      });
+      document.addEventListener('keydown', function (event) {
+          if (event.altKey && event.key === 'ArrowRight') {
+              event.preventDefault();  
+              document.getElementById('next').click();
+          }
+      });
+      document.addEventListener('keydown', function (event) {
+          if (event.altKey && event.key === 'ArrowLeft') {
+              event.preventDefault();  
+              document.getElementById('prev').click();
+          }
+      });
+      document.addEventListener('keydown', function (event) {
+          if (event.altKey && event.key === 'v') {
+              event.preventDefault();  
+              document.getElementById('volume-up-icon').click();
+          }
+      });
+      document.addEventListener('keydown', function (event) {
+          if (event.altKey && event.key === 'd') {
+              event.preventDefault();  
+              document.getElementById('downloadicon').click();
+          }
+      });
+
+      setTimeout(function() {
+            {% if messages_to_display %}
+                  {% for message in messages %}
+                      document.getElementById('popup-text').innerHTML = '{{ message }}';
+                      const loginMessage = document.querySelector('.login-message-crhome');
+                      loginMessage.style.display = 'block';
+                      setTimeout(function() {
+                          loginMessage.classList.add('show');
+                          setTimeout(function() {
+                              loginMessage.classList.remove('show');
+                              setTimeout(function() {
+                                  loginMessage.style.display = 'none';
+                              }, 1000);
+                          }, 4000);
+                      }, 100);
+                  {% endfor %}
+            {% endif %}
+      }, 500);
+      $(document).ready(function () {
+          var timeout;
+          $(".accountopen").hover(function () {
+              clearTimeout(timeout);
+              $(".account-manage-dropdwn").css("display", "block");
+          }, function () {
+              timeout = setTimeout(function () {
+                  $(".account-manage-dropdwn").css("display", "none");
+              }, 500);
+          });
+          $(".account-manage-dropdwn").hover(function () {
+              clearTimeout(timeout);
+              $(".account-manage-dropdwn").css("display", "block");
+          }, function () {
+              timeout = setTimeout(function () {
+                  $(".account-manage-dropdwn").css("display", "none");
+              }, 500);
+          });
+      });
+
+      function addToPlaylistTrigger() {
+        document.getElementById('openModal').click();
+      }
+      document.addEventListener('DOMContentLoaded', function() {
+      document.getElementById('openModal').addEventListener('click', function() {
+          document.getElementById('myModal').style.display = 'block';
+          document.getElementById('overlayplay').style.display = 'block';
+
+          document.getElementById('modalcontainer').style.display = 'block';
+          document.body.style.overflow = 'hidden';
+      });
+      document.getElementById('closeModal').addEventListener('click', function() {
+          document.getElementById('myModal').style.display = 'none';
+          document.getElementById('overlayplay').style.display = 'none';
+          document.getElementById('modalcontainer').style.display = 'none';
+          document.body.style.overflow = 'auto'; 
+      });
+      });
+
+    document.getElementById('addtoplaylisticon').addEventListener('click', function() {
+      togglePopup();
+    });
+    function togglePopup() {
+        var popup = document.getElementById('popupaddtoplaylist');
+        if (popup.style.display === 'block') {
+            closePopup();
+        } else {
+            openPopup();
+        }
+    }
+    function openPopup() {
+        document.getElementById('popupaddtoplaylist').style.display = 'block';
+        console.log("O P E N");
+    }
+    function closePopup() {
+        document.getElementById('popupaddtoplaylist').style.display = 'none';
+        console.log("C L O S E");
+    }
+    </script>
+
+
+
+<script>
+
+  let index = 0;
+  let songs = [];
+
+  function updateMusicData(data) {
+
+  let existingIndex = songs.findIndex(song => song.MusicId === data.MusicId);
+
+  if (existingIndex !== -1) {
+    console.log("Song already present in array, jumping to index :",existingIndex);
+    index = existingIndex;
+    songs[existingIndex] = {
+      MusicId: data.MusicId,
+      name: data.name,
+      artist: data.artist,
+      img: data.img,
+      audio: data.audio,
+      creatorid: data.creatorid,
+      CrImg: data.CrImg,
+      Crrole: data.Crrole,
+      alid: data.alid,
+      alNm: data.alNm,
+      alCvr: data.alCvr,
+      rd: data.rd,
+      lang: data.lang,
+      genre: data.genre,
+      mood: data.mood,
+      collab1id: data.collab1id,
+      collab1nm: data.collab1nm,
+      collab1img: data.collab1img,
+      collab1role: data.collab1role,
+      collab2id: data.collab2id,
+      collab2nm: data.collab2nm,
+      collab2img: data.collab2img,
+      collab2role: data.collab2role,
+      collab3id: data.collab3id,
+      collab3nm: data.collab3nm,
+      collab3img: data.collab3img,
+      collab3role: data.collab3role,
+    };
+  } else {
+    // Song doesn't exist, add it to the array
+    console.log("Song isn't present in array, Pushing song to array");
+    songs.push({
+      MusicId: data.MusicId,
+      name: data.name,
+      artist: data.artist,
+      img: data.img,
+      audio: data.audio,
+      creatorid: data.creatorid,
+      CrImg: data.CrImg,
+      Crrole: data.Crrole,
+      alid: data.alid,
+      alNm: data.alNm,
+      alCvr: data.alCvr,
+      rd: data.rd,
+      lang: data.lang,
+      genre: data.genre,
+      mood: data.mood,
+      collab1id: data.collab1id,
+      collab1nm: data.collab1nm,
+      collab1img: data.collab1img,
+      collab1role: data.collab1role,
+      collab2id: data.collab2id,
+      collab2nm: data.collab2nm,
+      collab2img: data.collab2img,
+      collab2role: data.collab2role,
+      collab3id: data.collab3id,
+      collab3nm: data.collab3nm,
+      collab3img: data.collab3img,
+      collab3role: data.collab3role,
+    });
+
+    index = songs.length - 1;
+    }
+
+    console.log("Songs array after updating/add new song:");
+    console.log(songs);
+
+    loadData(index);
+    loadAdditionaData(index);
+    playSong();
+}
+
+function updateAlbumData(albumDataArray) {
+    if (!Array.isArray(songs)) {
+        songs = [];
+    }
+
+    const previousIndex = index;
+
+    const currentLength = songs.length;
+
+    for (let i = 0; i < albumDataArray.length; i++) {
+        let songData = albumDataArray[i];
+        let song = {
+          MusicId: songData.MusicId,
+          name: songData.name,
+          artist: songData.artist,
+          img: songData.img,
+          audio: songData.audio,
+          creatorid: songData.creatorid,
+          CrImg: songData.CrImg,
+          Crrole: songData.Crrole,
+          alid: songData.alid,
+          alNm: songData.alNm,
+          alCvr: songData.alCvr,
+          rd: songData.rd,
+          lang: songData.lang,
+          genre: songData.genre,
+          mood: songData.mood,
+          collab1id: songData.collab1id,
+          collab1nm: songData.collab1nm,
+          collab1img: songData.collab1img,
+          collab1role: songData.collab1role,
+          collab2id: songData.collab2id,
+          collab2nm: songData.collab2nm,
+          collab2img: songData.collab2img,
+          collab2role: songData.collab2role,
+          collab3id: songData.collab3id,
+          collab3nm: songData.collab3nm,
+          collab3img: songData.collab3img,
+          collab3role: songData.collab3role,
+        };
+
+        songs.push(song);
+      }
+      index = currentLength;
+
+      console.log("Songs array after adding new songs from album:");
+      console.log(songs);
+
+      // Load data, including the correct index
+      loadData(index);
+      loadAdditionaData(index);
+      playSong();
+    }
+
+  
+    
+  const content = document.querySelector(".content");
+  const details = document.querySelector(".details-container");
+  const songInfo = document.querySelector(".sidepanelsonginfo-cont");
+  const shortcutInfo = document.querySelector(".sidepanelshortcuts-cont");
+      Playimage = details.querySelector(".music-image img"),
+      musicName = details.querySelector(".music-titles .name"),
+      musicArtist = details.querySelector(".music-titles .artist"),
+      Audio = document.querySelector(".main-song"),
+      playBtn = content.querySelector("#play"),
+      prevBtn = content.querySelector("#prev"),
+      nextBtn = content.querySelector("#next"),
+      progressBar = content.querySelector(".progress-bar"),
+      progressDetails = content.querySelector(".progress-details"),
+      repeatBtn = content.querySelector("#repeat"),
+      shuffleBtn = content.querySelector("#shuffle");
+      details.style.display = 'none';
+      songInfo.style.display = 'none';
+      shortcutInfo.style.display = 'block';
+      
+  window.addEventListener("load", () => {
+  });
+
+
+
+  function loadData(indexValue) {
+      console.log("Loading data for index:", indexValue);
+
+      if (songs.length === 0) {
+        console.warn("No songs available.");
+        return;
+    } else {
+        details.style.display = 'block'; 
+        songInfo.style.display = 'block'; 
+        shortcutInfo.style.display = 'none'; 
+    }
+
+    if (index < 0) {
+        index = songs.length - 1;
+    } else if (index >= songs.length) {
+        index = 0;
+    }
+      console.log("Name:", songs[index].name);
+      console.log("Artist:", songs[index].artist);
+      console.log("Image URL:", songs[index].img);
+      console.log("Audio URL:", songs[index].audio);
+      console.log("currently playing song with id :", songs[index].MusicId);
+
+      var numericMusicId = parseInt(songs[index].MusicId, 10);
+      document.getElementById('currentlyPlayingSongId').innerText = numericMusicId;
+
+      musicName.innerText = songs[index].name;
+      musicArtist.innerText = songs[index].artist;
+      Playimage.src = songs[index].img;
+      Audio.src = songs[index].audio;
+      let profileLinkNav = document.querySelector('.music-titles a');
+      profileLinkNav.href = `/User/ViewProfile/${songs[index].creatorid}`;
+      
+      console.log("Data loaded successfully.");
+      applyDarkenedBackgroundColor(songs[index].img, 'sidePanel');
+
+
+
+     
+
+      
+  }
+
+  $('.playlist-item-add').click(function(e) {
+        e.preventDefault();
+        let playlistId = $(this).data('playlist-id');
+        let currentlyPlayingSongId = parseInt(document.getElementById('currentlyPlayingSongId').innerText, 10);
+        addToPlaylist(playlistId,currentlyPlayingSongId);
+  });
+
+  function addToPlaylist(playlistId,currentlyPlayingSongId ) {
+      console.log('Clicked on playlist with ID:', playlistId);
+
+      console.log('Adding song with ID:', currentlyPlayingSongId);
+      musicId = currentlyPlayingSongId;
+      const url = `/User/AddtoPlaylist/?playlistId=${playlistId}&musicId=${musicId}`;
+
+      fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then(response => {
+          if (response.ok) {
+            console.log('Added to playlist successfully');
+            closePopup();
+          } else {
+            console.error('Error adding to playlist');
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+  }
+  function downloadMusic() {
+    let currentlyPlayingSongId = parseInt(document.getElementById('currentlyPlayingSongId').innerText, 10);
+
+        $.ajax({
+            url: '/User/download_music/',  
+            type: 'GET',
+            data: { song_id: currentlyPlayingSongId },
+            success: function(response) {
+                console.log(response);
+                let link = document.createElement('a');
+            link.href = response.download_url;
+            link.download = response.download_filename; 
+
+            document.body.appendChild(link);
+            link.click();
+
+            document.body.removeChild(link);
+        },
+        error: function(error) {
+            console.error(error);
+        }
+        });
+    }
+
+  function loadAdditionaData(indexValue) {
+      console.log("Loading additional data for index:", indexValue);
+
+      if (!Array.isArray(songs) || songs.length === 0) {
+        console.warn("No songs available.");
+        return;
+      }
+
+      // Ensure that the index is within a valid range
+      if (indexValue < 0 || indexValue >= songs.length) {
+          console.warn("Invalid index value:", indexValue);
+          return;
+      }
+
+      // Update the global index variable
+      index = indexValue;
+
+      document.querySelector('.sidepanel-maining img').src = songs[index].img;
+      document.querySelector('.sidepanel-songname h2').innerText = songs[index].name;
+        
+      document.querySelector('.artistdata-img img').src = songs[index].CrImg;
+      document.querySelector('.sidepanel-artistdata h4').innerText = songs[index].artist;
+      if (songs[index].artist.length > 12) {
+        document.querySelector('.sidepanel-artistdata h4').classList.add('scrolling-text-sidepanel');
+      } else {
+        document.querySelector('.sidepanel-artistdata h4').classList.remove('scrolling-text-sidepanel');
+      }
+      document.querySelector('.sidepanel-artistdata h5').innerText = songs[index].Crrole;
+      let crProfileLinkImg = document.querySelector('.artistdata-img a');
+      crProfileLinkImg.href = `/User/ViewProfile/${songs[index].creatorid}`;
+      let crProfileLink = document.querySelector('.artistdata-profile a');
+      crProfileLink.href = `/User/ViewProfile/${songs[index].creatorid}`;
+
+      const collab1ProfileLink = document.querySelector('.artistdata-profile1 a');
+      const collab1ProfileImgLink = document.querySelector('.artistdata-img1 a');
+      const collab2ProfileLink = document.querySelector('.artistdata-profile2 a');
+      const collab2ProfileImgLink = document.querySelector('.artistdata-img2 a');
+
+if (songs[index].collab1id && songs[index].collab2id && songs[index].collab3id) {
+          document.querySelector('.sidepanel-artistdata1').style.display = 'block';
+          document.querySelector('.sidepanel-artistdata2').style.display = 'block';
+          document.querySelector('.sidepanel-artistdata3').style.display = 'block';
+
+          document.querySelectorAll('.sidepanel-artistdata1 h4')[0].innerText = songs[index].collab1nm;
+          if (songs[index].collab1nm.length > 12) {
+            document.querySelector('.sidepanel-artistdata1 h4').classList.add('scrolling-text-sidepanel');
+          } else {
+            document.querySelector('.sidepanel-artistdata1 h4').classList.remove('scrolling-text-sidepanel');
+          }
+          document.querySelectorAll('.artistdata-img1 img')[0].src = songs[index].collab1img;
+          document.querySelectorAll('.sidepanel-artistdata1 h5')[0].innerText = songs[index].collab1role;
+          collab1ProfileLink.href = `/User/ViewProfile/${songs[index].collab1id}`;
+          collab1ProfileImgLink.href = `/User/ViewProfile/${songs[index].collab1id}`;
+
+          document.querySelectorAll('.sidepanel-artistdata2 h4')[0].innerText = songs[index].collab2nm;
+          if (songs[index].collab2nm.length > 12) {
+            document.querySelector('.sidepanel-artistdata2 h4').classList.add('scrolling-text-sidepanel');
+          } else {
+            document.querySelector('.sidepanel-artistdata2 h4').classList.remove('scrolling-text-sidepanel');
+          }
+          document.querySelectorAll('.artistdata-img2 img')[0].src = songs[index].collab2img;
+          document.querySelectorAll('.sidepanel-artistdata2 h5')[0].innerText = songs[index].collab2role;
+          collab2ProfileLink.href = `/User/ViewProfile/${songs[index].collab2id}`;
+          collab2ProfileImgLink.href = `/User/ViewProfile/${songs[index].collab2id}`;
+
+          document.querySelectorAll('.sidepanel-artistdata3 h4')[0].innerText = songs[index].collab3nm;
+          if (songs[index].collab3nm.length > 12) {
+            document.querySelector('.sidepanel-artistdata3 h4').classList.add('scrolling-text-sidepanel');
+          } else {
+            document.querySelector('.sidepanel-artistdata3 h4').classList.remove('scrolling-text-sidepanel');
+          }
+          document.querySelectorAll('.artistdata-img3 img')[0].src = songs[index].collab3img;
+          document.querySelectorAll('.sidepanel-artistdata3 h5')[0].innerText = songs[index].collab3role;
+          collab2ProfileLink.href = `/User/ViewProfile/${songs[index].collab3id}`;
+          collab2ProfileImgLink.href = `/User/ViewProfile/${songs[index].collab3id}`;
+
+} else if (songs[index].collab1id && songs[index].collab2id) {
+        document.querySelector('.sidepanel-artistdata1').style.display = 'block';
+        document.querySelector('.sidepanel-artistdata2').style.display = 'block';
+        document.querySelector('.sidepanel-artistdata3').style.display = 'none';
+
+          document.querySelectorAll('.sidepanel-artistdata1 h4')[0].innerText = songs[index].collab1nm;
+          document.querySelectorAll('.sidepanel-artistdata2 h4')[0].innerText = songs[index].collab2nm;
+
+          if (songs[index].collab1nm.length && songs[index].collab2nm.length > 12) {
+            document.querySelector('.sidepanel-artistdata1 h4').classList.add('scrolling-text-sidepanel');
+            document.querySelector('.sidepanel-artistdata2 h4').classList.add('scrolling-text-sidepanel');
+          } else {
+            document.querySelector('.sidepanel-artistdata1 h4').classList.remove('scrolling-text-sidepanel');
+            document.querySelector('.sidepanel-artistdata2 h4').classList.remove('scrolling-text-sidepanel');
+          }
+
+          document.querySelectorAll('.artistdata-img1 img')[0].src = songs[index].collab1img;
+          document.querySelectorAll('.sidepanel-artistdata1 h5')[0].innerText = songs[index].collab1role;
+          collab1ProfileLink.href = `/User/ViewProfile/${songs[index].collab1id}`;
+          collab1ProfileImgLink.href = `/User/ViewProfile/${songs[index].collab1id}`;
+
+          document.querySelectorAll('.artistdata-img2 img')[0].src = songs[index].collab2img;
+          document.querySelectorAll('.sidepanel-artistdata2 h5')[0].innerText = songs[index].collab2role;
+          collab2ProfileLink.href = `/User/ViewProfile/${songs[index].collab2id}`;
+          collab2ProfileImgLink.href = `/User/ViewProfile/${songs[index].collab2id}`;
+
+} else if (songs[index].collab1id && songs[index].collab3id) {
+        document.querySelector('.sidepanel-artistdata1').style.display = 'block';
+        document.querySelector('.sidepanel-artistdata2').style.display = 'none';
+        document.querySelector('.sidepanel-artistdata3').style.display = 'block';
+
+          document.querySelectorAll('.sidepanel-artistdata1 h4')[0].innerText = songs[index].collab1nm;
+          document.querySelectorAll('.sidepanel-artistdata3 h4')[0].innerText = songs[index].collab3nm;
+
+          if (songs[index].collab1nm.length && songs[index].collab3nm.length > 12) {
+            document.querySelector('.sidepanel-artistdata1 h4').classList.add('scrolling-text-sidepanel');
+            document.querySelector('.sidepanel-artistdata3 h4').classList.add('scrolling-text-sidepanel');
+          } else {
+            document.querySelector('.sidepanel-artistdata1 h4').classList.remove('scrolling-text-sidepanel');
+            document.querySelector('.sidepanel-artistdata3 h4').classList.remove('scrolling-text-sidepanel');
+          }
+
+          document.querySelectorAll('.artistdata-img1 img')[0].src = songs[index].collab1img;
+          document.querySelectorAll('.sidepanel-artistdata1 h5')[0].innerText = songs[index].collab1role;
+          collab1ProfileLink.href = `/User/ViewProfile/${songs[index].collab1id}`;
+          collab1ProfileImgLink.href = `/User/ViewProfile/${songs[index].collab1id}`;
+
+          document.querySelectorAll('.artistdata-img3 img')[0].src = songs[index].collab3img;
+          document.querySelectorAll('.sidepanel-artistdata3 h5')[0].innerText = songs[index].collab3role;
+          collab2ProfileLink.href = `/User/ViewProfile/${songs[index].collab3id}`;
+          collab2ProfileImgLink.href = `/User/ViewProfile/${songs[index].collab3id}`;
+
+} else if (songs[index].collab2id && songs[index].collab3id) {
+        document.querySelector('.sidepanel-artistdata1').style.display = 'none';
+        document.querySelector('.sidepanel-artistdata2').style.display = 'block';
+        document.querySelector('.sidepanel-artistdata3').style.display = 'block';
+
+          document.querySelectorAll('.sidepanel-artistdata2 h4')[0].innerText = songs[index].collab2nm;
+          document.querySelectorAll('.sidepanel-artistdata3 h4')[0].innerText = songs[index].collab3nm;
+
+          if (songs[index].collab2nm.length && songs[index].collab3nm.length > 12) {
+            document.querySelector('.sidepanel-artistdata2 h4').classList.add('scrolling-text-sidepanel');
+            document.querySelector('.sidepanel-artistdata3 h4').classList.add('scrolling-text-sidepanel');
+          } else {
+            document.querySelector('.sidepanel-artistdata2 h4').classList.remove('scrolling-text-sidepanel');
+            document.querySelector('.sidepanel-artistdata3 h4').classList.remove('scrolling-text-sidepanel');
+          }
+
+          document.querySelectorAll('.artistdata-img2 img')[0].src = songs[index].collab2img;
+          document.querySelectorAll('.sidepanel-artistdata2 h5')[0].innerText = songs[index].collab2role;
+          collab2ProfileLink.href = `/User/ViewProfile/${songs[index].collab2id}`;
+          collab2ProfileImgLink.href = `/User/ViewProfile/${songs[index].collab2id}`;
+
+          document.querySelectorAll('.artistdata-img3 img')[0].src = songs[index].collab3img;
+          document.querySelectorAll('.sidepanel-artistdata3 h5')[0].innerText = songs[index].collab3role;
+          collab2ProfileLink.href = `/User/ViewProfile/${songs[index].collab3id}`;
+          collab2ProfileImgLink.href = `/User/ViewProfile/${songs[index].collab3id}`;
+
+      } else if (songs[index].collab1id) {
+          document.querySelector('.sidepanel-artistdata1').style.display = 'block';
+          document.querySelector('.sidepanel-artistdata2').style.display = 'none';
+          document.querySelector('.sidepanel-artistdata3').style.display = 'none';
+
+          document.querySelectorAll('.sidepanel-artistdata1 h4')[0].innerText = songs[index].collab1nm;
+          if (songs[index].collab1nm.length > 12) {
+            document.querySelector('.sidepanel-artistdata1 h4').classList.add('scrolling-text-sidepanel');
+          } else {
+            document.querySelector('.sidepanel-artistdata1 h4').classList.remove('scrolling-text-sidepanel');
+          }
+          document.querySelectorAll('.artistdata-img1 img')[0].src = songs[index].collab1img;
+          document.querySelectorAll('.sidepanel-artistdata1 h5')[0].innerText = songs[index].collab1role;
+          collab1ProfileLink.href = `/User/ViewProfile/${songs[index].collab1id}`;
+          collab1ProfileImgLink.href = `/User/ViewProfile/${songs[index].collab1id}`;
+
+      } else if (songs[index].collab2id) {
+          document.querySelector('.sidepanel-artistdata1').style.display = 'none';
+          document.querySelector('.sidepanel-artistdata2').style.display = 'block';
+          document.querySelector('.sidepanel-artistdata3').style.display = 'none';
+
+          document.querySelectorAll('.sidepanel-artistdata2 h4')[0].innerText = songs[index].collab2nm;
+          if (songs[index].collab2nm.length > 12) {
+            document.querySelector('.sidepanel-artistdata2 h4').classList.add('scrolling-text-sidepanel');
+          } else {
+            document.querySelector('.sidepanel-artistdata2 h4').classList.remove('scrolling-text-sidepanel');
+          }
+          document.querySelectorAll('.artistdata-img2 img')[0].src = songs[index].collab2img;
+          document.querySelectorAll('.sidepanel-artistdata2 h5')[0].innerText = songs[index].collab2role;
+          collab2ProfileLink.href = `/User/ViewProfile/${songs[index].collab2id}`;
+          collab2ProfileImgLink.href = `/User/ViewProfile/${songs[index].collab2id}`;
+          
+      } else if (songs[index].collab3id) {
+          document.querySelector('.sidepanel-artistdata1').style.display = 'none';
+          document.querySelector('.sidepanel-artistdata2').style.display = 'none';
+          document.querySelector('.sidepanel-artistdata3').style.display = 'block';
+
+          document.querySelectorAll('.sidepanel-artistdata3 h4')[0].innerText = songs[index].collab2nm;
+          if (songs[index].collab2nm.length > 12) {
+            document.querySelector('.sidepanel-artistdata3 h4').classList.add('scrolling-text-sidepanel');
+          } else {
+            document.querySelector('.sidepanel-artistdata3 h4').classList.remove('scrolling-text-sidepanel');
+          }
+          document.querySelectorAll('.artistdata-img3 img')[0].src = songs[index].collab2img;
+          document.querySelectorAll('.sidepanel-artistdata3 h5')[0].innerText = songs[index].collab3role;
+          collab2ProfileLink.href = `/User/ViewProfile/${songs[index].collab3id}`;
+          collab2ProfileImgLink.href = `/User/ViewProfile/${songs[index].collab3id}`;
+          
+      } else { 
+        document.querySelector('.sidepanel-artistdata1').style.display = 'none';
+        document.querySelector('.sidepanel-artistdata2').style.display = 'none';
+        document.querySelector('.sidepanel-artistdata3').style.display = 'none';
+      }
+
+      if (songs[index].alid) {
+          document.querySelector('.sidepanel-albumssect').style.display = 'block';
+
+          document.querySelector('.sidepanel-albumscontainer h4').innerText = songs[index].alNm;
+          document.querySelector('.albumsimg-name a').href = `/User/ViewAlbum/${songs[index].alid}`;
+          document.querySelector('.sidepanel-albumsimg img').src = songs[index].alCvr;
+          document.querySelector('.sidepanel-albumsimg a').href = `/User/ViewAlbum/${songs[index].alid}`;
+      } else {
+          document.querySelector('.sidepanel-albumssect').style.display = 'none';
+      }
+
+      const genreElement = document.querySelector('.sidepanel-moreinfo table tr:nth-child(1) td:nth-child(3)');
+      const moodElement = document.querySelector('.sidepanel-moreinfo table tr:nth-child(2) td:nth-child(3)');
+      const langElement = document.querySelector('.sidepanel-moreinfo table tr:nth-child(3) td:nth-child(3)');
+      const releaseDateElement = document.querySelector('.sidepanel-moreinfo table tr:nth-child(4) td:nth-child(3)');
+
+      // Set genre
+      if (songs[index].genre) {
+          genreElement.innerText = songs[index].genre;
+      } else {
+          genreElement.innerText = 'Unspecified';
+      }
+      // Set mood
+      if (songs[index].mood) {
+          moodElement.innerText = songs[index].mood;
+      } else {
+          moodElement.innerText = 'Unspecified';
+      }
+      // Set language
+      if (songs[index].lang) {
+          langElement.innerText = songs[index].lang;
+      } else {
+          langElement.innerText = 'Unspecified';
+      }
+      // Set release date
+      const releaseDate = songs[index].rd;
+      if (releaseDate) {
+          const dateObject = new Date(releaseDate);
+          const day = dateObject.getDate().toString().padStart(2, '0');
+          const month = (dateObject.getMonth() + 1).toString().padStart(2, '0');
+          const year = dateObject.getFullYear();
+          const formattedDate = `${day}-${month}-${year}`;
+          releaseDateElement.innerText = formattedDate;
+      } else {
+          releaseDateElement.innerText = 'Unspecified';
+      }
+
+      console.log("Additional Data loaded successfully.");
+      console.log("Songs in the array:");
+      console.log(songs);
+    }
+
+  
+
+  playBtn.addEventListener("click", () => {
+      const isMusicPaused = content.classList.contains("paused");
+      if (isMusicPaused) {
+          pauseSong();
+      } else {
+          playSong();
+      }
+  });
+
+  function playSong() {
+    if (Audio.readyState >= 2) {  // '2' means audio has loaded enough data for playing
+        content.classList.add("paused");
+        playBtn.innerHTML = "<span class='material-symbols-rounded' id='play'><i class='bi bi-pause-fill'></i></span>";
+        Audio.play();
+    } else {
+        console.warn("Audio is not loaded yet. Please wait.");
+
+        Audio.addEventListener("canplay", function () {
+            content.classList.add("paused");
+            playBtn.innerHTML = "<span class='material-symbols-rounded' id='play'><i class='bi bi-pause-fill'></i></span>";
+            Audio.play();
+        });
+    }
+  }
+
+  function pauseSong() {
+      content.classList.remove("paused");
+      playBtn.innerHTML ="<span class='material-symbols-rounded' id='play'><i class='bi bi-play-fill'></i></span>";
+      Audio.pause();
+  }
+
+  nextBtn.addEventListener("click", () => {
+      nextSong();
+  });
+
+  prevBtn.addEventListener("click", () => {
+      prevSong();
+  });
+
+  function nextSong() {
+      index = (index + 1) % songs.length;
+      loadData(index);
+      loadAdditionaData(index);
+      playSong();
+  }
+
+  function prevSong() {
+      index = (index - 1 + songs.length) % songs.length;
+      loadData(index);
+      loadAdditionaData(index);
+      playSong();
+  }
+
+  Audio.addEventListener("timeupdate", (e) => {
+      const initialTime = e.target.currentTime;
+      const finalTime = e.target.duration;
+      let barWidth = (initialTime / finalTime) * 100;
+      progressBar.style.width = barWidth + "%";
+
+      progressDetails.addEventListener("click", (e) => {
+          let progressValue = progressDetails.clientWidth;
+          let clickedOffsetX = e.offsetX;
+          let musicDuration = Audio.duration;
+
+          Audio.currentTime = (clickedOffsetX / progressValue) * musicDuration;
+      });
+
+      
+    function updateFinalTime() {
+        let finalTimeData = content.querySelector(".final");
+        let audioDuration = Audio.duration;
+        let finalMinutes = Math.floor(audioDuration / 60);
+        let finalSeconds = Math.floor(audioDuration % 60);
+        if (finalSeconds < 10) {
+            finalSeconds = "0" + finalSeconds;
+        }
+        finalTimeData.innerText = finalMinutes + ":" + finalSeconds;
+    }
+    Audio.addEventListener("loadeddata", updateFinalTime);
+
+
+      updateFinalTime();
+
+      let currentTimeData = content.querySelector(".current");
+      let currentTime = Audio.currentTime;
+      let currentMinutes = Math.floor(currentTime / 60);
+      let currentSeconds = Math.floor(currentTime % 60);
+      if (currentSeconds < 10) {
+          currentSeconds = "0" + currentSeconds;
+      }
+      currentTimeData.innerText = currentMinutes + ":" + currentSeconds;
+
+      repeatBtn.addEventListener("click", () => {
+          Audio.currentTime = 0;
+      });
+  });
+
+  shuffleBtn.addEventListener("click", () => {
+      index = Math.floor(Math.random() * songs.length);
+      loadData(index);
+      loadAdditionaData(index);
+      playSong();
+  });
+
+  Audio.addEventListener("ended", () => {
+      nextSong();
+  });
+
+      const volumeSlider = document.getElementById("volume-slider");
+      const muteButton = document.getElementById("volume-mute-icon");
+      let audio = Audio
+      let isMuted = false;
+      let previousVolume = 1;
+
+      function setAudioVolume(volume) {
+          audio.volume = volume;
+          volumeSlider.value = volume;
+      }
+      volumeSlider.addEventListener("input", function () {
+          const sliderValue = parseFloat(volumeSlider.value);
+          if (audio && !isMuted) {
+              setAudioVolume(sliderValue);
+              previousVolume = sliderValue;
+          }
+      });
+      muteButton.addEventListener("click", function () {
+          if (!isMuted) {
+              previousVolume = audio.volume;
+              setAudioVolume(0);
+              muteButton.classList.remove("bi-volume-mute");
+              muteButton.classList.add("bi-volume-mute-fill");
+          } else {
+              setAudioVolume(previousVolume);
+              muteButton.classList.remove("bi-volume-mute-fill");
+              muteButton.classList.add("bi-volume-mute");
+          }
+          isMuted = !isMuted;
+      });
+
+  function applyDarkenedBackgroundColor(imageUrl, panelId) {
+    var card = document.getElementById(panelId);
+
+    var img = new Image();
+    img.crossOrigin = 'Anonymous';
+    img.src = imageUrl;
+
+    img.onload = function () {
+      var canvas = document.createElement('canvas');
+      var ctx = canvas.getContext('2d');
+      canvas.width = img.width;
+      canvas.height = img.height;
+      ctx.drawImage(img, 0, 0, img.width, img.height);
+      var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+      var sumRed = 0;
+      var sumGreen = 0;
+      var sumBlue = 0;
+      for (var i = 0; i < imageData.length; i += 4) {
+        sumRed += imageData[i];
+        sumGreen += imageData[i + 1];
+        sumBlue += imageData[i + 2];
+      }
+      var avgRed = Math.round(sumRed / (imageData.length / 4));
+      var avgGreen = Math.round(sumGreen / (imageData.length / 4));
+      var avgBlue = Math.round(sumBlue / (imageData.length / 4));
+      var darknessFactor = 0.9;
+      var darkenedRed = Math.round(avgRed * darknessFactor);
+      var darkenedGreen = Math.round(avgGreen * darknessFactor);
+      var darkenedBlue = Math.round(avgBlue * darknessFactor);
+      card.style.backgroundColor = 'rgb(' + darkenedRed + ',' + darkenedGreen + ',' + darkenedBlue + ')';
+    };
+  }
+  
+</script>
+</body>
+</html>
