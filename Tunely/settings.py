@@ -49,11 +49,11 @@ INSTALLED_APPS = [
     'Creator',
     'User',
     'Guest',
-    # 'django.contrib.sites',
-    # 'allauth',
-    # 'allauth.account',
-    # 'allauth.socialaccount',
-    # 'allauth.socialaccount.providers.google',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
 ]
 
 SOCIALACCOUNT_PROVIDERS = {
